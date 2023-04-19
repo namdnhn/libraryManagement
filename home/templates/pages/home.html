@@ -1,497 +1,295 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+{% block title %}
+Library
+{% endblock %}
 
-  <title>{% block title %}{% endblock %}</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-
-  <style>
-    .gradient-custom {
-      background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgb(166, 76, 85, 1))
-    }
-  </style>
-</head>
-
-<body>
-  {% block content %}
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top ">
-    <div class="container d-flex align-items-center">
-
-      <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
-          alt="" class="img-fluid"></a>
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">Trang chủ</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">List sách</a>
-          </li>
-
+{% block content %}
+<!-- ======= Hero Section ======= -->
+<a name="home"></a>
+<section id="hero" class="d-flex align-items-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
+        data-aos="fade-up" data-aos-delay="200">
+        <h1>Mượn sách dễ dàng hơn với thư viện số library</h1>
+        <h2>Hàng ngàn tựa sách thú vị đang chờ bạn tìm đọc</h2>
+        <div class="d-flex justify-content-center justify-content-lg-start">
           {% if user.username %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Hello, {{user.username}}
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a href="#profile" data-gallery="Portfolio" class="portfolio-lightbox preview-link"> Thông tin cá
-                  nhân</a>
-              </li>
-              <li><a class="dropdown-item" href="{% url 'user_cart:cart_detail' %}">Giỏ sách</a></li>
-              <!-- <li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="logout/">Đăng xuất</a></li>
-            </ul>
-          </li>
+          <a href="" class="btn-get-started scrollto">Khám phá ngay</a>
           {% else %}
-          <a href="">
-            <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
-          </a>
+          <a href="" class="btn-get-started scrollto">Đăng ký ngay</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+        <img src="{% static 'des/Library.png' %}" width="1500" height="400" class="img-fluid animated" alt="">
+      </div>
+    </div>
+  </div>
+
+</section><!-- End Hero -->
+
+<main id="main">
+
+  <!-- ======= About Us Section ======= -->
+  <a name="introduction"></a>
+  <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Giới thiệu</h2>
+      </div>
+
+      <div class="row content">
+        <div class="col-lg-6">
+          <p>
+            Thư viện số Library gồm các tính năng trực tuyến:
+          </p>
+          <ul>
+            <li><i class="ri-check-double-line"></i> Tra cứu sách đang có trong thư viện</li>
+            <li><i class="ri-check-double-line"></i> Gợi ý những tựa sách nên đọc </li>
+            <li><i class="ri-check-double-line"></i> Đăng ký mượn sách từ thư viện</li>
+          </ul>
+        </div>
+        <div class="col-lg-6 pt-4 pt-lg-0">
+          <p>
+            Có ai đó đã từng khẳng định rằng: “Sách hay, cũng như bạn tốt, ít và được chọn lựa; chọn lựa càng nhiều,
+            thưởng thức càng nhiều”.
+            Quả thật, sách đóng vai trò quan trọng trong cuộc sống. Bởi vậy mà “Sách là người bạn lớn của con người”.
+          </p>
+          {% if user.username %}
+          <a href="" class="btn-learn-more">Khám phá ngay</a>
+          {% else %}
+          <a href="register" class="btn-learn-more">Đăng ký ngay</a>
           {% endif %}
 
-          <a>
-            <form action="" class="search" method="GET">
-              <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
-            </form>
-          </a>
-
-        </ul>
-
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+        </div>
+      </div>
 
     </div>
-  </header><!-- End Header -->
+  </section><!-- End About Us Section -->
 
-  <!-- ======= Hero Section ======= -->
-  <a name="home"></a>
-  <section id="hero" class="d-flex align-items-center">
-    <div class="container">
+  <!-- ======= Portfolio Section ======= -->
+  <a name="mustread"></a>
+  <section id="portfolio" class="portfolio">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Sách nên đọc</h2>
+        <p> Mỗi cuốn sách là một bức tranh kì diệu về cuộc sống, mở ra trước mắt chúng ta những chân trời tri thức
+          mới.
+          Có những cuốn sách đã trở thành kim chỉ nam soi sáng trên con đường chúng ta đi, hoặc đơn giản chỉ là lưu
+          giữ những kỉ niệm bồi đắp cho tâm hồn.
+          Trong thế giới sách phong phú và ngập tràn như hiện nay, có rất nhiều cuốn sách hay và ý nghĩa khiến bạn yêu
+          thích.
+          Vậy bạn cảm nhận về nó như thế nào?
+        </p>
+      </div>
+
+      <ul id="portfolio-flters" class="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <li data-filter="*" class="filter-active">All</li>
+        <li data-filter=".filter-entertain">Giải trí</li>
+        <li data-filter=".filter-ref">Tài liệu tham khảo</li>
+        <li data-filter=".filter-language">Ngôn ngữ</li>
+      </ul>
+
+      <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Dế mèn phiêu lưu ký</h4>
+            <p>Giải trí</p>
+            <a href="{% static 'assets/img/portfolio/1.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-language">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/2.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Giáo trình Hán ngữ quyển 1</h4>
+            <p>Ngôn ngữ</p>
+            <a href="{% static 'assets/img/portfolio/2.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/3.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Sự im lặng của bầy cừu</h4>
+            <p>Giải trí</p>
+            <a href="{% static 'assets/img/portfolio/3.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/4.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Giáo trình lập trình C++</h4>
+            <p>Tài liệu tham khảo</p>
+            <a href="{% static 'assets/img/portfolio/4.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-language">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/5.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Tiếng anh chuyên ngành Công nghệ thông tin</h4>
+            <p>Ngôn ngữ</p>
+            <a href="{% static 'assets/img/portfolio/5.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/6.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Mắt biếc</h4>
+            <p>Giải trí</p>
+            <a href="{% static 'assets/img/portfolio/6.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/7.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4> Lập trình hướng đối tượng </h4>
+            <p> Tài liệu tham khảo </p>
+            <a href="{% static 'assets/img/portfolio/7.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/8.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Giáo trình cơ sở dữ liệu</h4>
+            <p>Tài liệu tham khảo</p>
+            <a href="{% static 'assets/img/portfolio/8.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 portfolio-item filter-language">
+          <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/9.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="portfolio-info">
+            <h4>Sách tiếng Nhật</h4>
+            <p>Ngôn ngữ</p>
+            <a href="{% static 'assets/img/portfolio/9.jpg' %}" data-gallery="portfolioGallery"
+              class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
+            <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Portfolio Section -->
+
+  <!-- ======= Team Section ======= -->
+  <a name="member"></a>
+  <section id="team" class="team section-bg">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Chúng tôi là ai?</h2>   
+        <p>Nhóm 4 sinh viên lớp INT2208 4 UET
+          <br> Giảng viên: ThS. Nguyễn Đức Anh
+        </p>
+      </div>
+
       <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
-          data-aos="fade-up" data-aos-delay="200">
-          <h1>Mượn sách dễ dàng hơn với thư viện số library</h1>
-          <h2>Hàng ngàn tựa sách thú vị đang chờ bạn tìm đọc</h2>
-          <div class="d-flex justify-content-center justify-content-lg-start">
-            {% if user.username %}
-            <a href="" class="btn-get-started scrollto">Khám phá ngay</a>
-            {% else %}
-            <a href="" class="btn-get-started scrollto">Đăng ký ngay</a>
-            {% endif %}
+        <div class="col-sm-6">
+          <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
+            <div class="pic"><img src="{% static 'assets/img/team/Nam.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="member-info">
+              <h4>Hoàng Nam</h4>
+              <span>21020126</span>
+              <div class="social">
+                <a href=""><i class="ri-twitter-fill"></i></a>
+                <a href=""><i class="ri-facebook-fill"></i></a>
+                <a href=""><i class="ri-instagram-fill"></i></a>
+                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
-          <img src="{% static 'des/Library.png' %}" width="1500" height="400" class="img-fluid animated" alt="">
+
+        <div class="col-sm-6">
+          <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
+            <div class="pic"><img src="{% static 'assets/img/team/mtphuong.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="member-info">
+              <h4>Tú Phương</h4>
+              <span>21020552</span>
+              <div class="social">
+                <a href=""><i class="ri-twitter-fill"></i></a>
+                <a href=""><i class="ri-facebook-fill"></i></a>
+                <a href=""><i class="ri-instagram-fill"></i></a>
+                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div class="row mt-3">
+        <div class="col-sm-6">
+          <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="300">
+            <div class="pic"><img src="{% static 'assets/img/team/lpnham.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="member-info">
+              <h4>Phùng Nhâm</h4>
+              <span>21021660</span>
+              <div class="social">
+                <a href=""><i class="ri-twitter-fill"></i></a>
+                <a href=""><i class="ri-facebook-fill"></i></a>
+                <a href=""><i class="ri-instagram-fill"></i></a>
+                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="400">
+            <div class="pic"><img src="{% static 'assets/img/team/hachan.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="member-info">
+              <h4>Việt Hà</h4>
+              <span>21020311</span>
+              <div class="social">
+                <a href=""><i class="ri-twitter-fill"></i></a>
+                <a href=""><i class="ri-facebook-fill"></i></a>
+                <a href=""><i class="ri-instagram-fill"></i></a>
+                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-    <!-- ======= About Us Section ======= -->
-    <a name="introduction"></a>
-    <section id="about" class="about">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
-          <h2>Giới thiệu</h2>
-        </div>
-
-        <div class="row content">
-          <div class="col-lg-6">
-            <p>
-              Thư viện số Library gồm các tính năng trực tuyến:
-            </p>
-            <ul>
-              <li><i class="ri-check-double-line"></i> Tra cứu sách đang có trong thư viện</li>
-              <li><i class="ri-check-double-line"></i> Gợi ý những tựa sách nên đọc </li>
-              <li><i class="ri-check-double-line"></i> Đăng ký mượn sách từ thư viện</li>
-            </ul>
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0">
-            <p>
-              Có ai đó đã từng khẳng định rằng: “Sách hay, cũng như bạn tốt, ít và được chọn lựa; chọn lựa càng nhiều,
-              thưởng thức càng nhiều”.
-              Quả thật, sách đóng vai trò quan trọng trong cuộc sống. Bởi vậy mà “Sách là người bạn lớn của con người”.
-            </p>
-            {% if user.username %}
-            <a href="" class="btn-learn-more">Khám phá ngay</a>
-            {% else %}
-            <a href="register" class="btn-learn-more">Đăng ký ngay</a>
-            {% endif %}
-
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End About Us Section -->
-
-    <!-- ======= Portfolio Section ======= -->
-    <a name="mustread"></a>
-    <section id="portfolio" class="portfolio">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Sách nên đọc</h2>
-          <p> Mỗi cuốn sách là một bức tranh kì diệu về cuộc sống, mở ra trước mắt chúng ta những chân trời tri thức
-            mới.
-            Có những cuốn sách đã trở thành kim chỉ nam soi sáng trên con đường chúng ta đi, hoặc đơn giản chỉ là lưu
-            giữ những kỉ niệm bồi đắp cho tâm hồn.
-            Trong thế giới sách phong phú và ngập tràn như hiện nay, có rất nhiều cuốn sách hay và ý nghĩa khiến bạn yêu
-            thích.
-            Vậy bạn cảm nhận về nó như thế nào?
-          </p>
-        </div>
-
-        <ul id="portfolio-flters" class="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
-          <li data-filter="*" class="filter-active">All</li>
-          <li data-filter=".filter-entertain">Giải trí</li>
-          <li data-filter=".filter-ref">Tài liệu tham khảo</li>
-          <li data-filter=".filter-language">Ngôn ngữ</li>
-        </ul>
-
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/1.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Dế mèn phiêu lưu ký</h4>
-              <p>Giải trí</p>
-              <a href="{% static 'assets/img/portfolio/1.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-language">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/2.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Giáo trình Hán ngữ quyển 1</h4>
-              <p>Ngôn ngữ</p>
-              <a href="{% static 'assets/img/portfolio/2.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/3.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Sự im lặng của bầy cừu</h4>
-              <p>Giải trí</p>
-              <a href="{% static 'assets/img/portfolio/3.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/4.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Giáo trình lập trình C++</h4>
-              <p>Tài liệu tham khảo</p>
-              <a href="{% static 'assets/img/portfolio/4.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-language">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/5.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Tiếng anh chuyên ngành Công nghệ thông tin</h4>
-              <p>Ngôn ngữ</p>
-              <a href="{% static 'assets/img/portfolio/5.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-entertain">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/6.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Mắt biếc</h4>
-              <p>Giải trí</p>
-              <a href="{% static 'assets/img/portfolio/6.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Giải trí"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/7.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4> Lập trình hướng đối tượng </h4>
-              <p> Tài liệu tham khảo </p>
-              <a href="{% static 'assets/img/portfolio/7.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-ref">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/8.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Giáo trình cơ sở dữ liệu</h4>
-              <p>Tài liệu tham khảo</p>
-              <a href="{% static 'assets/img/portfolio/8.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Tài liệu tham khảo"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-language">
-            <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/9.jpg' %}" class="img-fluid" alt="">
-            </div>
-            <div class="portfolio-info">
-              <h4>Sách tiếng Nhật</h4>
-              <p>Ngôn ngữ</p>
-              <a href="{% static 'assets/img/portfolio/9.jpg' %}" data-gallery="portfolioGallery"
-                class="portfolio-lightbox preview-link" title="Ngôn ngữ"><i class="bx bx-plus"></i></a>
-              <a href="" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Portfolio Section -->
-
-    <!-- ======= Team Section ======= -->
-    <a name="member"></a>
-    <section id="team" class="team section-bg">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Chúng tôi là ai?</h2>   
-          <p>Nhóm 4 sinh viên lớp INT2208 4 UET
-            <br> Giảng viên: ThS. Nguyễn Đức Anh
-          </p>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
-              <div class="pic"><img src="{% static 'assets/img/team/Nam.jpg' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Hoàng Nam</h4>
-                <span>21020126</span>
-                <div class="social">
-                  <a href=""><i class="ri-twitter-fill"></i></a>
-                  <a href=""><i class="ri-facebook-fill"></i></a>
-                  <a href=""><i class="ri-instagram-fill"></i></a>
-                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
-              <div class="pic"><img src="{% static 'assets/img/team/mtphuong.jpg' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Tú Phương</h4>
-                <span>21020552</span>
-                <div class="social">
-                  <a href=""><i class="ri-twitter-fill"></i></a>
-                  <a href=""><i class="ri-facebook-fill"></i></a>
-                  <a href=""><i class="ri-instagram-fill"></i></a>
-                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-sm-6">
-            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="300">
-              <div class="pic"><img src="{% static 'assets/img/team/lpnham.jpg' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Phùng Nhâm</h4>
-                <span>21021660</span>
-                <div class="social">
-                  <a href=""><i class="ri-twitter-fill"></i></a>
-                  <a href=""><i class="ri-facebook-fill"></i></a>
-                  <a href=""><i class="ri-instagram-fill"></i></a>
-                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="400">
-              <div class="pic"><img src="{% static 'assets/img/team/hachan.jpg' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Việt Hà</h4>
-                <span>21020311</span>
-                <div class="social">
-                  <a href=""><i class="ri-twitter-fill"></i></a>
-                  <a href=""><i class="ri-facebook-fill"></i></a>
-                  <a href=""><i class="ri-instagram-fill"></i></a>
-                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Team Section -->
-
-    <!-- ======= Footer ======= -->
-    <footer id="footer">
-
-      <div class="footer-top">
-        <div class="container">
-          <div class="row">
-
-            <div class="col-lg-6 footer-contact">
-              <h3>Library</h3>
-              <p>
-                144 Xuân Thuỷ <br>
-                Cầu Giấy, Hà Nội<br>
-                Việt Nam <br><br>
-                <strong>Phone:</strong> +84 xxx xxx xxx<br>
-                <strong>Email:</strong> xxx@gmail.com<br>
-              </p>
-            </div>
-
-            <div class="col-lg-6 footer-links">
-              <h4>Useful Links</h4>
-              <ul>
-                <li><i class="bx bx-chevron-right"></i> <a href="#home">Home</a></li>
-                <li><i class="bx bx-chevron-right"></i> <a href="#introduction">Giới thiệu</a></li>
-                <li><i class="bx bx-chevron-right"></i> <a href="#mustread">Sách nên đọc</a></li>
-                <li><i class="bx bx-chevron-right"></i> <a href="#member">Chúng tôi là ai?</a></li>
-              </ul>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="col-lg-5">
-                <div class="user_profile" style="display: none;">
-                  <div class="preview-link" id="profile">
-                    <div class="container py-5 h-100">
-                      <div class="row d-flex justify-content-center align-items-center h-100">
-                        <div class="col col-lg-10 mb-4 mb-lg-0">
-                          <div class="card mb-3" style="border-radius: .5rem;">
-                            <div class="row g-0">
-                              <div class="col-md-4 gradient-custom text-center text-white"
-                                style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                                <img src="{% static 'des/userava.png' %}" alt="Avatar" class="img-fluid my-5"
-                                  style="width: 80px; height: 80px;" />
-                                <h5>Họ tên</h5>
-                                <p>{{user.username}}</p>
-                                <i class="far fa-edit mb-5"></i>
-                              </div>
-                              <div class="col-md-8">
-                                <div class="card-body p-4">
-                                  <h6>Thông tin</h6>
-                                  <hr class="mt-0 mb-4">
-                                  <div class="row pt-1">
-                                    <div class="col-6 mb-3">
-                                      <h6>Email</h6>
-                                      <p class="text-muted">{{user.email}}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                      <h6>Số điện thoại</h6>
-                                      <p class="text-muted">xxxxxxxxxx</p>
-                                    </div>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <h6>Ngày sinh</h6>
-                                    <p class="text-muted">xx-xx-xxxx</p>
-                                  </div>
-                                  <div class="col-6 mb-3">
-                                    <h6>Địa chỉ</h6>
-                                    <p class="text-muted">Sao hoả :)</p>
-                                  </div>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-      </div>
-      </div>
-
-      <div class="container footer-bottom clearfix">
-        <div class="copyright">
-          &copy; INT2208 4
-        </div>
-        <div class="credits">
-          <!-- All the links in the footer should remain intact. -->
-          <!-- You can delete the links only if you purchased the pro version. -->
-          <!-- Licensing information: https://bootstrapmade.com/license/ -->
-          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/ -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
-      </div>
-    </footer><!-- End Footer -->
-
-    <div id="preloader"></div>
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
-
-    <!-- Vendor JS Files -->
-    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-    <script src="{% static 'assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
-    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-
-    <!-- Template Main JS File -->
-    <script src="{% static 'assets/js/main.js' %}"></script>
-    {% endblock %}
-</body>
-
-</html>
+  </section><!-- End Team Section -->  
+{% endblock %}
