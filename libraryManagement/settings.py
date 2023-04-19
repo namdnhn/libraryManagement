@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'book',
+    'store',
+    'user',
+    'staff'
 ]
 
 MIDDLEWARE = [
@@ -78,7 +82,7 @@ WSGI_APPLICATION = 'libraryManagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'library_management',
+        'NAME': 'libmanage',
         'USER': 'dnhn',
         'PASSWORD': '11022003',
         'HOST': 'localhost',
