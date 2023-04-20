@@ -40,11 +40,11 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">Trang chủ</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Trang chủ</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">List sách</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
           </li>
 
           {% if user.username %}

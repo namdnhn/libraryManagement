@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{{book.title}} - Thông tin
+{% endblock %}
+
+{% block content %}
+  <main id="main">
+    <a name="book"></a>
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="">Trang chủ</a></li>
+          <li><a href="#">Book</a></li>
+        </ol>
+        <!-- <h2>{{book.title}}</h2> -->
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+      <div class="container">
+
+        <div class="product-content row">
+
+          <div class="product-content-left row">
+            <div class="product-content-left-big-img">
+              <img src="{{book.book_image.url}}" alt="">
+            </div>
+          </div>
+
+          <div class="product-content-right">
+            <div class="portfolio-info">
+              <h3>Thông tin sách: {{book.title}}</h3>
+              <ul>
+                <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
+                <li><strong>Tác giả</strong>: {{book.author}}</li>
+              </ul>
+              <form method="POST" action="">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{book.id}}" />
+                <input type="hidden" name="quantity" value="1" />
+
+                <a href="">
+                  <button class="btn btn-outline-success" type="button">
+                    Thêm vào giỏ hàng
+                  </button>
+                </a>
+              </form>
+              <br>
+              <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
+                <h3 style="color: #ddd;">Giới thiệu</h3>
+              </div>
+              
+                <div class="product-content-right-bottom-content-gioithieu" style="color: #ddd;">
+                  {{book.description}}
+                </div>
+
+          </div>
+
+        </div>
+    </section><!-- End Portfolio Details Section -->
+
+  </main><!-- End #main -->
+
+{% endblock %}
