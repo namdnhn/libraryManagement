@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
 from django.contrib.auth import get_user_model
 
-# Hash for password
 Account = get_user_model()
 
 
@@ -50,3 +49,7 @@ def SignupPage(request):
 def LogoutPage(request):
     logout(request)
     return redirect('login')
+
+
+def ProfilePage(request):
+    return render(request, 'pages/users-profile.html')

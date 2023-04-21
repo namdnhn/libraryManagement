@@ -5,18 +5,32 @@ from book.models import Book, Bookinfo
 
 # Create your models here.
 class User(models.Model):
-    id = models.IntegerField(primary_key=True)
-    fname = models.CharField(max_length=15)
-    lname = models.CharField(max_length=15)
-    avatar = models.ImageField()
-    address = models.CharField(max_length=100, blank=True, null=True)
+    GENDER_MALE = 1
+    GENDER_FEMALE = 2
+    GENDER_CHOICES = [
+        (GENDER_MALE, "Male"),
+        (GENDER_FEMALE, "Female"),
+    ]
+
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    fname = models.CharField(max_length=20)
+    lname = models.CharField(max_length=20)
+    avatar = models.ImageField(upload_to="home/img/", null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
+    gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, null=True, blank=True)
+    phone = models.CharField(max_length=32, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
     account = models.ForeignKey(Account, models.DO_NOTHING)
     is_active = models.IntegerField()
-    create_date = models.DateField()
-    expired_date = models.DateField()
+    create_date = models.DateField(auto_now_add=True)
+    expired_date = models.DateField(blank=True)
 
     def __str__(self):
         return self.account.username
+
+    @property
+    def get_avatar(self):
+        return self.avatar.url if self.avatar else 'static/assets/img/team/default-profile-picture.png'
 
 
 class CartItem(models.Model):

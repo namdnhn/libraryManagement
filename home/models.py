@@ -1,4 +1,3 @@
-import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -6,7 +5,7 @@ from django.db import models
 class Account(AbstractUser):
     last_login, first_name, last_name = (None,) * 3
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.AutoField(primary_key=True, auto_created=True)
     username = models.CharField(unique=True, max_length=50)
     password = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)

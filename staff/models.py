@@ -4,9 +4,10 @@ from home.models import Account
 from book.models import Book
 from user.models import User
 
+
 # Create your models here.
 class Staff(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, auto_created=True)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
@@ -19,6 +20,7 @@ class Staff(models.Model):
 
     def __str__(self):
         return self.account.username
+
 
 class Transaction(models.Model):
     id = models.IntegerField(primary_key=True)
