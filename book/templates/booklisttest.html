@@ -10,6 +10,9 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
   <!-- Vendor CSS Files -->
   <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -30,13 +33,12 @@
 </head>
 
 <body>
+  {% block content %}
   <!-- ======= Header ======= -->
-  {% block header_type %}
-  {% endblock %}
+  <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-      <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
-          alt="" class="img-fluid"></a>
+      <a href="{% url 'home' %}" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width = "200" height = "60" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -45,50 +47,101 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
+            <a class="nav-link active" aria-current="page" href="">List sách</a>
           </li>
 
           {% if user.username %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Hello, {{user.username}}
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a href="#profile" data-gallery="Portfolio" class="portfolio-lightbox preview-link"> Thông tin cá
-                  nhân</a>
-              </li>
-              <li><a class="dropdown-item" href="{% url 'user_cart:cart_detail' %}">Giỏ sách</a></li>
-              <!-- <li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="logout/">Đăng xuất</a></li>
-            </ul>
-          </li>
-          {% else %}
-          <a href="">
-            <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
-          </a>
-          {% endif %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Hello, {{user.username}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a href="#profile" data-gallery="Portfolio" class="portfolio-lightbox preview-link"> Thông tin cá nhân</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{% url 'user_cart:cart_detail' %}">Giỏ sách</a></li>
+                  <!-- <li><a class="dropdown-item" href="borrowedt">Sách đã mượn</a></li> -->
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
+                </ul>
+              </li>           
+            {% else %}
+              <a href="">
+                <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
+              </a>
+            {% endif %}
 
-          <a>
-            <form action="" class="search" method="GET">
-              <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
-            </form>
-          </a>
+            <a>
+              <form action="" class="search" method="GET">
+                <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
+              </form>
+            </a>
 
         </ul>
-
+          
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
     </div>
   </header><!-- End Header -->
-  {% block content %}
-  
-  {% endblock %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home' %}">Trang chủ</a></li>
+          <li>List sách</li>
+        </ol>
+        <h2>Sách</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
+    <!-- List -->
+    <section id="list" class="list section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>List sách</h2>
+          <p>Mời bạn đọc</p>
+        </div>
+
+        <div class="row">
+
+          <div class="row">
+            {% for book in books %}
+            <div class="col-lg-4">
+              <a href="">
+                <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
+                  <div class="pic"><img src="" class="img-fluid" alt=""></div>
+                  <div class="member-info">
+                    <h4>{{book.title}}</h4>
+                    <span></span>
+                    <div class="portfolio-info">
+                      <ul>
+                        <li><strong>Tác giả</strong>: </li>
+                        <li><strong>Giá thuê/ngày</strong>:  VNĐ</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End List Section -->
+    
+
+  </main><!-- End #main -->
+
   <!-- ======= Footer ======= -->
   <footer id="footer">
 
@@ -106,9 +159,13 @@
               <strong>Email:</strong> xxx@gmail.com<br>
             </p>
           </div>
-          {% block shortcut %}
-          
-          {% endblock %}
+
+          <div class="col-lg-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#home">List sách</a></li>
+            </ul>
+          </div>
 
           <div class="col-lg-6">
             <div class="col-lg-5">
@@ -121,8 +178,8 @@
                           <div class="row g-0">
                             <div class="col-md-4 gradient-custom text-center text-white"
                               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                              <img src="{% static 'des/userava.png' %}" alt="Avatar" class="img-fluid my-5"
-                                style="width: 80px; height: 80px;" />
+                              <img src="{% static 'des/userava.png' %}"
+                                alt="Avatar" class="img-fluid my-5" style="width: 80px; height: 80px;" />
                               <h5>Họ tên</h5>
                               <p>{{user.username}}</p>
                               <i class="far fa-edit mb-5"></i>
@@ -150,7 +207,9 @@
                                   <p class="text-muted">Sao hoả :)</p>
                                 </div>
                               </div>
-
+                  
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -158,35 +217,28 @@
                     </div>
                   </div>
                 </div>
+              
               </div>
             </div>
-
+  
           </div>
+
         </div>
-
       </div>
-
-    </div>
-    </div>
     </div>
 
     <div class="container footer-bottom clearfix">
       <div class="copyright">
-        &copy; INT2208 4
+        &copy; INT2211 24 
       </div>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/ -->
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
   </footer><!-- End Footer -->
 
   <div id="preloader"></div>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
@@ -199,7 +251,7 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
-  
+  {% endblock %}
 </body>
 
 </html>

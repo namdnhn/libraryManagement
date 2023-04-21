@@ -5,6 +5,10 @@
 Library
 {% endblock %}
 
+{% block header_type %}
+  <header id="header" class="fixed-top">
+{% endblock %}
+
 {% block content %}
 <!-- ======= Hero Section ======= -->
 <a name="home"></a>
@@ -292,4 +296,16 @@ Library
 
     </div>
   </section><!-- End Team Section -->  
+{% endblock %}
+
+{% block shortcut %} 
+<div class="col-lg-6 footer-links">
+  <h4>Useful Links</h4>
+  <ul>
+    <li><i class="bx bx-chevron-right"></i> <a href="#home">Home</a></li>
+    <li><i class="bx bx-chevron-right"></i> <a href="#introduction">Giới thiệu</a></li>
+    <li><i class="bx bx-chevron-right"></i> <a href="#mustread">Sách nên đọc</a></li>
+    <li><i class="bx bx-chevron-right"></i> <a href="#member">Chúng tôi là ai?</a></li>
+  </ul>
+</div>
 {% endblock %}

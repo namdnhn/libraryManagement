@@ -4,6 +4,10 @@
 {{book.title}} - Thông tin
 {% endblock %}
 
+{% block header_type %}
+  <header id="header" class="fixed-top header-inner-pages">
+{% endblock %}
+
 {% block content %}
   <main id="main">
     <a name="book"></a>
@@ -12,8 +16,9 @@
       <div class="container">
 
         <ol>
-          <li><a href="">Trang chủ</a></li>
-          <li><a href="#">Book</a></li>
+          <li><a href="{% url 'home' %}">Trang chủ</a></li>
+          <li><a href="{% url 'book:book_list' %}">List sách</a></li>
+          <li>{{book.title}}</li>
         </ol>
         <!-- <h2>{{book.title}}</h2> -->
 
@@ -66,4 +71,14 @@
 
   </main><!-- End #main -->
 
+{% endblock %}
+
+{% block shortcut%}
+  <div class="col-lg-6 footer-links">
+    <h4>Useful Links</h4>
+    <ul>      
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home' %}">Trang chủ</a></li>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
+    </ul>
+  </div>
 {% endblock %}
