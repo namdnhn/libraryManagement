@@ -3,23 +3,24 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 Account = get_user_model()
 
 
 def index(request):
-    if not request.user.username:
-        return render(request, 'pages/home.html')
-    elif request.user.is_authenticated:
-        username = request.user.username
-        # Check if account signed in for the first time -> redirect to change profile page
-        return render(request, 'pages/home.html')
+    if request.user.is_authenticated:
+        account = Account.objects.get(username=request.user.username)
+        if not account.user.lname:
+            messages.warning(request, "Please change your profile first!")
+            return redirect('home/profile')
+    return render(request, 'pages/home.html')
 
 
 def LoginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        pass1 = request.POST.get('pass')
+        pass1 = request.POST.get('password')
         user = authenticate(request, username=username, password=pass1)
         if user is not None:
             login(request, user)
@@ -27,7 +28,7 @@ def LoginPage(request):
         else:
             messages.warning(request, "Username or Password is incorrect!!!")
 
-    return render(request, 'pages/login.html')
+    return render(request, 'pages/pages-login.html')
 
 
 def SignupPage(request):
@@ -43,7 +44,7 @@ def SignupPage(request):
     else:
         form = RegistrationForm()
 
-    return render(request, 'pages/signup.html', {'form': form})
+    return render(request, 'pages/pages-register.html', {'form': form})
 
 
 def LogoutPage(request):
@@ -52,4 +53,15 @@ def LogoutPage(request):
 
 
 def ProfilePage(request):
-    return render(request, 'pages/users-profile.html')
+    account = Account.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        user = account.user
+        user.fname = request.POST.get('first_name')
+        user.lname = request.POST.get('last_name')
+        user.birthday = request.POST.get('birthday')
+        user.gender = request.POST.get('gender')
+        user.phone = request.POST.get('phone')
+        user.address = request.POST.get('address')
+        user.save()
+
+    return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})

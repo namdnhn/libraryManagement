@@ -12,7 +12,7 @@ class User(models.Model):
         (GENDER_FEMALE, "Female"),
     ]
 
-    id = models.IntegerField(primary_key=True, auto_created=True)
+    id = models.AutoField(primary_key=True, auto_created=True)
     fname = models.CharField(max_length=20)
     lname = models.CharField(max_length=20)
     avatar = models.ImageField(upload_to="home/img/", null=True, blank=True)
@@ -22,14 +22,14 @@ class User(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     account = models.OneToOneField(Account, related_name="user", on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
-    expired_date = models.DateField(blank=True)
+    expired_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.account.username
 
     @property
     def get_avatar(self):
-        return self.avatar.url if self.avatar else 'static/assets/img/team/default-profile-picture.png'
+        return self.avatar.url if self.avatar else 'static/des/userava.png'
 
 
 class CartItem(models.Model):

@@ -1,15 +1,14 @@
 from django import forms
 import re
 from home.models import Account
+from user.models import User
 
 
 class RegistrationForm(forms.Form):
-    username = forms.CharField(label='Tài khoản', error_messages={'required': 'Quay lại điền username đê'})
-    email = forms.EmailField(label='Email', error_messages={'required': 'Quay lại điền email đê'})
-    password1 = forms.CharField(label='Mật khẩu', widget=forms.PasswordInput(),
-                                error_messages={'required': 'Quay lại điền password đê'})
-    password2 = forms.CharField(label='Nhập lại mật khẩu', widget=forms.PasswordInput(),
-                                error_messages={'required': 'Quay lại điền xác nhận password đê'})
+    username = forms.CharField(label='Tài khoản')
+    email = forms.EmailField(label='Email')
+    password1 = forms.CharField(label='Mật khẩu', widget=forms.PasswordInput())
+    password2 = forms.CharField(label='Nhập lại mật khẩu', widget=forms.PasswordInput())
 
     class Meta:
         model = Account
@@ -43,3 +42,5 @@ class RegistrationForm(forms.Form):
 
     def save(self):
         Account.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'], password=self.cleaned_data['password1'])
+        user = User(fname='Unknown', lname='', account=Account.objects.get(username=self.cleaned_data['username']))
+        user.save()

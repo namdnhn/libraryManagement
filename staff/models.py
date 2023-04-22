@@ -7,7 +7,7 @@ from user.models import User
 
 # Create your models here.
 class Staff(models.Model):
-    id = models.IntegerField(primary_key=True, auto_created=True)
+    id = models.AutoField(primary_key=True, auto_created=True)
     first_name = models.CharField(max_length=20, blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=True, null=True)
     address = models.TextField(blank=True, null=True)

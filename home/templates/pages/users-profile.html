@@ -10,11 +10,6 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <!-- JQuery -->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-
   <!-- Favicons -->
   <link href="{% static 'assets_profile/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assets_profile/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -50,9 +45,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="/" class="logo d-flex align-items-center">
         <img src="{% static 'assets_profile/img/logo.png' %}" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">Library</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -218,13 +213,13 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="{% static 'assets_profile/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ account.username }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>{{ user.fname }} {{ user.lname }}</h6>
+              <span>{{ account.username }}</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -261,7 +256,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -276,12 +271,17 @@
   </header><!-- End Header -->
 
   <main id="main" class="main">
-
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
     <div class="pagetitle">
       <h1>Profile</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">Profile</li>
         </ol>
@@ -296,8 +296,8 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="{% static 'assets_profile/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-              <h2>Kevin Anderson</h2>
-              <h3>Web Designer</h3>
+              <h2>{{ user.fname }} {{ user.lname }}</h2>
+              <h3>{{ account.username }}</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -340,32 +340,38 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                    <div class="col-lg-9 col-md-8">{{ user.fname }} {{ user.lname }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Birthday</div>
-                    <div class="col-lg-9 col-md-8">01/01/2001</div>
+                    <div class="col-lg-9 col-md-8">{{ user.birthday }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Gender</div>
-                    <div class="col-lg-9 col-md-8">Male</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% if user.gender == user.GENDER_FEMALE %}
+                          Femail
+                      {% else %}
+                          Male
+                      {% endif %}
+                    </div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">account@company.com</div>
+                    <div class="col-lg-9 col-md-8">{{ account.email }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                    <div class="col-lg-9 col-md-8">{{ user.phone }}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                    <div class="col-lg-9 col-md-8">{{ user.address }}</div>
                   </div>
 
                 </div>
@@ -373,15 +379,17 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form method="post">
+                    {% csrf_token %}
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="{% static 'assets_profile/img/profile-img.jpg' %}" alt="Profile">
+                        <!--<img src="{% static 'assets_profile/img/profile-img.jpg' %}" alt="Profile">
                         <div class="pt-2">
                           <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                        </div>
+                        </div>-->
+                        <input class="form-control" type="file" id="formFile">
                       </div>
                     </div>
 
@@ -390,14 +398,14 @@
                       <div class="col-md-4 mb-3">
                           <div>
                               <input name="first_name" class="form-control" id="first_name" type="text"
-                                     placeholder="Enter your first name" value="{{ profile.user.first_name }}"
+                                     placeholder="Enter your first name" value="{{ user.fname }}"
                                      required>
                           </div>
                       </div>
                       <div class="col-md-4 mb-3">
                           <div>
                               <input name="last_name" class="form-control" id="last_name" type="text"
-                                     placeholder="Also your last name" value="{{ profile.user.last_name }}"
+                                     placeholder="Also your last name" value="{{ user.lname }}"
                                      required>
                           </div>
                       </div>
@@ -407,15 +415,8 @@
                       <label for="birthday" class="col-md-4 col-lg-3 col-form-label">Birthday</label>
                       <div class="col-md-8 col-lg-9">
                         <div class="input-group">
-                            <input name="birthday" class="form-control" id="datepicker"
-                                   type="text" placeholder="dd/mm/yyyy" value="{{ profile.birthday|date:'d/m/Y'|default:'' }}" required>
-                            <script>
-                              $( function() {
-                                $( "#datepicker" ).datepicker({
-                                  dateFormat: "dd/mm/yy"
-                                });
-                              } );
-                            </script>
+                            <input name="birthday" class="form-control" id="birthday"
+                                   type="date" value="{{ user.birthday|date:'Y-m-d' }}" required>
                         </div>
                       </div>
                     </div>
@@ -425,10 +426,9 @@
                       <div class="col-md-8 col-lg-9">
                         <select name="gender" class="form-select mb-0" id="gender"
                                 aria-label="Gender select example">
-                            <option selected>Gender</option>
-                            {% for key, value in profile.GENDER_CHOICES %}
+                            {% for key, value in user.GENDER_CHOICES %}
                                 <option value="{{ key }}"
-                                        {% if profile.gender == key %}selected{% endif %}>{{ value }}</option>
+                                        {% if user.gender == key %}selected{% endif %}>{{ value }}</option>
                             {% endfor %}
                         </select>
                       </div>
@@ -438,7 +438,7 @@
                       <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="email" class="form-control" id="email" type="email"
-                                           placeholder="name@company.com" value="{{ profile.user.email }}" readonly>
+                                           placeholder="name@company.com" value="{{ account.email }}" disabled>
                       </div>
                     </div>
 
@@ -446,7 +446,7 @@
                       <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="phone" class="form-control" id="phone" type="number"
-                                           placeholder="+86-345 678 910" value="{{ profile.phone }}" required>
+                                           placeholder="+86-345 678 910" value="{{ user.phone }}" required>
                       </div>
                     </div>
 
@@ -454,7 +454,7 @@
                       <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="address" class="form-control" id="address" type="text"
-                                           placeholder="Enter your home address" value="{{ profile.address|default:'' }}">
+                                           placeholder="Enter your home address" value="{{ user.address|default:'' }}">
                       </div>
                     </div>
 
