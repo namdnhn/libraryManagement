@@ -20,8 +20,7 @@ class User(models.Model):
     gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, null=True, blank=True)
     phone = models.CharField(max_length=32, null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
-    account = models.ForeignKey(Account, models.DO_NOTHING)
-    is_active = models.IntegerField()
+    account = models.OneToOneField(Account, related_name="user", on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
     expired_date = models.DateField(blank=True)
 

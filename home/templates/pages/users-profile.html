@@ -10,6 +10,11 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <!-- JQuery -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+
   <!-- Favicons -->
   <link href="{% static 'assets_profile/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assets_profile/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
@@ -331,9 +336,6 @@
               <div class="tab-content pt-2">
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
-
                   <h5 class="card-title">Profile Details</h5>
 
                   <div class="row">
@@ -342,23 +344,18 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Company</div>
-                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                    <div class="col-lg-3 col-md-4 label">Birthday</div>
+                    <div class="col-lg-9 col-md-8">01/01/2001</div>
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Job</div>
-                    <div class="col-lg-9 col-md-8">Web Designer</div>
+                    <div class="col-lg-3 col-md-4 label">Gender</div>
+                    <div class="col-lg-9 col-md-8">Male</div>
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Country</div>
-                    <div class="col-lg-9 col-md-8">USA</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">account@company.com</div>
                   </div>
 
                   <div class="row">
@@ -367,8 +364,8 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
                   </div>
 
                 </div>
@@ -389,86 +386,75 @@
                     </div>
 
                     <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                      <label class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                      <div class="col-md-4 mb-3">
+                          <div>
+                              <input name="first_name" class="form-control" id="first_name" type="text"
+                                     placeholder="Enter your first name" value="{{ profile.user.first_name }}"
+                                     required>
+                          </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <div>
+                              <input name="last_name" class="form-control" id="last_name" type="text"
+                                     placeholder="Also your last name" value="{{ profile.user.last_name }}"
+                                     required>
+                          </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                      <label for="birthday" class="col-md-4 col-lg-3 col-form-label">Birthday</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                        <div class="input-group">
+                            <input name="birthday" class="form-control" id="datepicker"
+                                   type="text" placeholder="dd/mm/yyyy" value="{{ profile.birthday|date:'d/m/Y'|default:'' }}" required>
+                            <script>
+                              $( function() {
+                                $( "#datepicker" ).datepicker({
+                                  dateFormat: "dd/mm/yy"
+                                });
+                              } );
+                            </script>
+                        </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+                      <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="company" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke">
+                        <select name="gender" class="form-select mb-0" id="gender"
+                                aria-label="Gender select example">
+                            <option selected>Gender</option>
+                            {% for key, value in profile.GENDER_CHOICES %}
+                                <option value="{{ key }}"
+                                        {% if profile.gender == key %}selected{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
+                      <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                        <input name="email" class="form-control" id="email" type="email"
+                                           placeholder="name@company.com" value="{{ profile.user.email }}" readonly>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                      <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="country" type="text" class="form-control" id="Country" value="USA">
+                        <input name="phone" class="form-control" id="phone" type="number"
+                                           placeholder="+86-345 678 910" value="{{ profile.phone }}" required>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                      <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
+                        <input name="address" class="form-control" id="address" type="text"
+                                           placeholder="Enter your home address" value="{{ profile.address|default:'' }}">
                       </div>
                     </div>
 

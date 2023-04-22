@@ -14,7 +14,7 @@ class Staff(models.Model):
     picture = models.ImageField()
     mail = models.CharField(max_length=50, blank=True, null=True)
     store = models.ForeignKey(Store, models.DO_NOTHING)
-    account = models.ForeignKey(Account, models.DO_NOTHING)
+    account = models.OneToOneField(Account, related_name="staff", on_delete=models.CASCADE)
     create_date = models.DateField()
     position = models.IntegerField()
 
