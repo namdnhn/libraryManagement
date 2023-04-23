@@ -55,6 +55,7 @@ def LogoutPage(request):
 def ProfilePage(request):
     account = Account.objects.get(id=request.user.id)
     if request.method == 'POST':
+        print(request)
         user = account.user
         user.fname = request.POST.get('first_name')
         user.lname = request.POST.get('last_name')
@@ -62,6 +63,8 @@ def ProfilePage(request):
         user.gender = request.POST.get('gender')
         user.phone = request.POST.get('phone')
         user.address = request.POST.get('address')
+        #user.avatar = request.POST.get('avatar')
+        user.avatar = request.FILES['avatar']
         user.save()
 
     return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})

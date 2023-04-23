@@ -15,7 +15,7 @@ class User(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     fname = models.CharField(max_length=20)
     lname = models.CharField(max_length=20)
-    avatar = models.ImageField(upload_to="home/img/", null=True, blank=True)
+    avatar = models.ImageField(upload_to="static/assets/img/team/", default='static/des/userava.png')
     birthday = models.DateField(null=True, blank=True)
     gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, null=True, blank=True)
     phone = models.CharField(max_length=32, null=True, blank=True)
@@ -26,10 +26,6 @@ class User(models.Model):
 
     def __str__(self):
         return self.account.username
-
-    @property
-    def get_avatar(self):
-        return self.avatar.url if self.avatar else 'static/des/userava.png'
 
 
 class CartItem(models.Model):
