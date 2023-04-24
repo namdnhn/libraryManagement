@@ -62,19 +62,21 @@
 
                   <div class="pt-4 pb-2">
                     <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                    {% for field in form %}
-                      {% for error in field.errors %}
+                    {% for error in form.errors %}
+                      {% if forloop.first %}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          {{ error|escape }}
+                          {% if error == 'username' %}
+                            {{ form.username.errors.0 }}
+                          {% elif error == 'email' %}
+                            {{ form.email.errors.0 }}
+                          {% elif error == 'password1' %}
+                            {{ form.password1.errors.0 }}
+                          {% elif error == 'password2' %}
+                            {{ form.password2.errors.0 }}
+                          {% endif %}
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                      {% endfor %}
-                      {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          {{ error|escape }}
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                      {% endfor %}
+                      {% endif %}
                     {% endfor %}
                   </div>
 

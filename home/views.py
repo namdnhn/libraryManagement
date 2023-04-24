@@ -3,7 +3,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
 from django.contrib.auth import get_user_model
-from datetime import datetime
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 Account = get_user_model()
 
@@ -55,16 +56,23 @@ def LogoutPage(request):
 def ProfilePage(request):
     account = Account.objects.get(id=request.user.id)
     if request.method == 'POST':
-        print(request)
-        user = account.user
-        user.fname = request.POST.get('first_name')
-        user.lname = request.POST.get('last_name')
-        user.birthday = request.POST.get('birthday')
-        user.gender = request.POST.get('gender')
-        user.phone = request.POST.get('phone')
-        user.address = request.POST.get('address')
-        #user.avatar = request.POST.get('avatar')
-        user.avatar = request.FILES['avatar']
-        user.save()
+        if 'old_password' in request.POST:
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Your password was successfully updated!')
+            return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account, 'form': form})
+        else:
+            user = account.user
+            user.fname = request.POST.get('first_name')
+            user.lname = request.POST.get('last_name')
+            user.birthday = request.POST.get('birthday')
+            user.gender = request.POST.get('gender')
+            user.phone = request.POST.get('phone')
+            user.address = request.POST.get('address')
+            if request.FILES:
+                user.avatar = request.FILES['avatar']
+            user.save()
 
     return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})
