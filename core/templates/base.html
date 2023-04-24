@@ -55,19 +55,19 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a href="#profile" data-gallery="Portfolio" class="portfolio-lightbox preview-link"> Thông tin cá
+                <a href="home/profile"> <!--data-gallery="Portfolio" class="portfolio-lightbox preview-link"--> Thông tin cá
                   nhân</a>
               </li>
-              <li><a class="dropdown-item" href="{% url 'user_cart:cart_detail' %}">Giỏ sách</a></li>
-              <!-- <li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
+              <li><a class="dropdown-item" href="">Giỏ sách</a></li>
+               <!--<li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="logout/">Đăng xuất</a></li>
+              <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
             </ul>
           </li>
           {% else %}
-          <a href="">
+          <a href="/login">
             <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
           </a>
           {% endif %}
