@@ -4,8 +4,25 @@
 Book information
 {% endblock %}
 
-{% block content %}
+{% block header_type %}
+  <header id="header" class="fixed-top header-inner-pages">
+{% endblock %}
 
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home' %}">Trang chủ</a></li>
+          <li>List sách</li>
+        </ol>
+        <h2>Sách</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
     <!-- List -->
     <section id="list" class="list section-bg">
       <div class="container" data-aos="fade-up">
@@ -47,6 +64,13 @@ Book information
 
   </main><!-- End #main -->
   {% endblock %}
-</body>
 
-</html>
+  {% block shortcut%}
+  <div class="col-lg-6 footer-links">
+    <h4>Useful Links</h4>
+    <ul>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home' %}">Trang chủ</a></li>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
+    </ul>
+  </div>
+  {% endblock %}
