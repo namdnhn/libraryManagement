@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Bookinfo
+from django.db.models import Q
 
 # Create your views here.
 def bookpage(request, id):
@@ -12,4 +13,15 @@ def book_list(request):
 
     return render(request, 'booklist.html', {
         'books': books
+    })
+
+def search(request):
+    if 'q' in request.GET:
+        q = request.GET.get('q')
+        books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q))
+        book_count = books.count()
+    return render(request, 'booksearch.html', {
+        'books': books,
+        'q' : q,
+        'book_count': book_count
     })

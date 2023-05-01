@@ -74,7 +74,7 @@
           {% endif %}
 
           <a>
-            <form action="" class="search" method="GET">
+            <form action="{% url 'book:search' %}" class="search" method="GET">
               <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
             </form>
           </a>
