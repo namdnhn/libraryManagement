@@ -3,7 +3,7 @@ from book.models import Book, Bookinfo
 from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem
 
-# @login_required(login_url="/login")
+@login_required(login_url="/login")
 def cart_add(request, id):
     current_user = request.user
     try:
@@ -26,7 +26,7 @@ def cart_add(request, id):
     return redirect("/cart/cart-detail/")
 
 
-# @login_required(login_url="/login")
+@login_required(login_url="/login")
 def item_clear(request, id):
     current_user = request.user
     cart = Cart.objects.get(user=current_user)
@@ -47,7 +47,7 @@ def total(cart):
         tt += item.book.info.cover_price
     return tt
 
-# @login_required(login_url="/login")
+@login_required(login_url="/login")
 def cart_detail(request):
     is_cart_exist = Cart.objects.filter(user=request.user).exists()
     if is_cart_exist:
@@ -68,3 +68,4 @@ def cart_detail(request):
     return render(request, 'pages/cart.html', {
         'exist': is_cart_exist
         })
+

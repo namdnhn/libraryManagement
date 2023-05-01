@@ -50,7 +50,7 @@ def SignupPage(request):
 
 def LogoutPage(request):
     logout(request)
-    return redirect('login')
+    return redirect('/login')
 
 
 def ProfilePage(request):

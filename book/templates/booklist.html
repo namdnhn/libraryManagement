@@ -16,7 +16,7 @@ Book information
       <div class="container">
 
         <ol>
-          <li><a href="{% url 'home' %}">Trang chủ</a></li>
+          <li><a href="{% url 'home:home' %}">Trang chủ</a></li>
           <li>List sách</li>
         </ol>
         <h2>Sách</h2>
@@ -69,7 +69,7 @@ Book information
   <div class="col-lg-6 footer-links">
     <h4>Useful Links</h4>
     <ul>
-      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home' %}">Trang chủ</a></li>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home:home' %}">Trang chủ</a></li>
       <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
     </ul>
   </div>
