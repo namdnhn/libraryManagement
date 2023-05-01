@@ -1,0 +1,498 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{% block title %}{% endblock %}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <style>
+    .gradient-custom {
+      background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgb(166, 76, 85, 1))
+    }
+
+
+    /* .header {
+      background-color: #327a81;
+      color: white;
+      font-size: 1.5em;
+      padding: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+    } */
+
+    img {
+      border-radius: 15%;
+      height: 180px;
+      width: 180px;
+    }
+
+    .table-users {
+      
+      border-radius: 10px;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+      max-width: calc(100% - 2em);
+      margin: 1em auto;
+      overflow: hidden;
+      width: 800px;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    table td,
+    table th {
+      color: #2b686e;
+      padding: 10px;
+    }
+
+    table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table td:last-child {
+      font-size: 0.95em;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+
+    @media screen and (max-width: 700px) {
+
+      table,
+      tr,
+      td {
+        display: block;
+      }
+
+      td:first-child {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100px;
+      }
+
+      td:not(:first-child) {
+        clear: both;
+        margin-left: 100px;
+        padding: 4px 20px 4px 90px;
+        position: relative;
+        text-align: left;
+      }
+
+      td:not(:first-child):before {
+        /* color: #91ced4; */
+        content: '';
+        display: block;
+        left: 0;
+        position: absolute;
+      }
+
+      td:nth-child(2):before {
+        content: 'Name:';
+      }
+
+      td:nth-child(3):before {
+        content: 'Email:';
+      }
+
+      td:nth-child(4):before {
+        content: 'Phone:';
+      }
+
+      td:nth-child(5):before {
+        content: 'Comments:';
+      }
+
+      tr {
+        padding: 10px 0;
+        position: relative;
+      }
+
+      tr:first-child {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      .header {
+        background-color: transparent;
+        color: white;
+        font-size: 2em;
+        font-weight: 700;
+        padding: 0;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      img {
+        border: 3px solid;
+        border-color: #daeff1;
+        height: 100px;
+        margin: 0.5rem 0;
+        width: 100px;
+      }
+
+      td:first-child {
+        background-color: #c8e7ea;
+        /* border-bottom: 1px solid #91ced4; */
+        border-radius: 10px 10px 0 0;
+        position: relative;
+        top: 0;
+        transform: translateY(0);
+        width: 100%;
+      }
+
+      td:not(:first-child) {
+        margin: 0;
+        padding: 5px 1em;
+        width: 100%;
+      }
+
+      td:not(:first-child):before {
+        font-size: .8em;
+        padding-top: 0.3em;
+        position: relative;
+      }
+
+      td:last-child {
+        padding-bottom: 1rem !important;
+      }
+
+      tr {
+        background-color: white !important;
+        border: 1px solid #6cbec6;
+        border-radius: 10px;
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        margin: 0.5rem 0;
+        padding: 0;
+      }
+
+      .table-users {
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  {% block content %}
+  <header id="header" class="fixed-top header-inner-pages">
+    <div class="container d-flex align-items-center">
+
+      <a href="{% url 'home' %}" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
+          alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Trang chủ</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
+          </li>
+
+          {% if user.username %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Hello, {{user.username}}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a href="#profile" data-gallery="Portfolio" class="portfolio-lightbox preview-link"> Thông tin cá
+                  nhân</a>
+              </li>
+              <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">Giỏ sách</a></li>
+              <!--<li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li>-->
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="">Đăng xuất</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <a href="{% url 'login' %}">
+            <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
+          </a>
+          {% endif %}
+
+          <a>
+            <form action="" class="search" method="GET">
+              <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
+            </form>
+          </a>
+
+        </ul>
+
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home' %}">Trang chủ</a></li>
+          <li>Giỏ sách</li>
+        </ol>
+        <h2>Giỏ sách</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
+    <!-- List -->
+    <section class="cart">
+
+      <div class="container mt-4">
+
+        <div id="thongbao" class="alert alert-danger d-none face" role="alert">
+
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+            <span aria-hidden="true">×</span>
+
+          </button>
+
+        </div>
+
+
+
+        <h1 class="text-center">Giỏ sách</h1>
+        <h4 class="text-center">------------------------------------------------------------------------------</h4>
+
+        {% if exist %}
+
+        <div class="row">
+
+          <div class="col col-md-12">
+
+            <table class="table table-bordered">
+
+              <thead>
+
+                <tr>
+
+                  <td>STT</th>
+
+                  <td>Ảnh đại diện</th>
+
+                  <td>Tên sản phẩm</th>
+
+                  <td>Số lượng</th>
+
+                  <td>Đơn giá</th>
+
+                  <td>Hành động</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="datarow">
+                {% for book in list_item %}
+                <tr>
+                  <td></td>
+                  <td>
+                    <img src="{{book.book.info.book_image.url}}" width="120" height="130" class="hinhdaidien">
+
+                  </td>
+
+                  <td>{{book.book.info.title}}</td>
+
+                  <td class="text-right">1</td>
+
+                  <td class="text-right">{{book.book.info.cover_price}}</td>
+
+                  <td>
+                    <!-- Nút xóa, bấm vào sẽ xóa thông tin dựa vào khóa chính `sp_ma` -->
+                    <a id="delete_1" data-sp-ma="2" class="btn btn-danger btn-delete-sanpham"
+                      href="{% url 'cart:item_clear' book.book.book_id %}">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+
+            </table>
+
+
+
+            <a href="{% url 'home' %}" class="btn btn-warning btn-md"><i class="fa fa-arrow-left"
+                aria-hidden="true"></i>&nbsp;Quay về trang chủ</a>
+
+            <a href="" class="btn btn-warning btn-md"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;Tổng
+              tiền: {{total}}</a>
+
+          </div>
+
+        </div>
+
+        {% else %}
+        
+        <h4 class="text-center" style="color: #ddd;"> Giỏ sách chưa có sản phẩm</h4>
+
+        {% endif %}
+
+      </div>
+
+
+
+    </section>
+
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-6 footer-contact">
+            <h3>Library</h3>
+            <p>
+              144 Xuân Thuỷ <br>
+              Cầu Giấy, Hà Nội<br>
+              Việt Nam <br><br>
+              <strong>Phone:</strong> +84 xxx xxx xxx<br>
+              <strong>Email:</strong> xxx@gmail.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#home">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#introduction">Giới thiệu</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#mustread">Sách nên đọc</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#member">Chúng tôi là ai?</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="col-lg-5">
+              <div class="user_profile" style="display: none;">
+                <div class="preview-link" id="profile">
+                  <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                      <div class="col col-lg-10 mb-4 mb-lg-0">
+                        <div class="card mb-3" style="border-radius: .5rem;">
+                          <div class="row g-0">
+                            <div class="col-md-4 gradient-custom text-center text-white"
+                              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                              <img src="{% static 'des/userava.png' %}" alt="Avatar" class="img-fluid my-5"
+                                style="width: 80px; height: 80px;" />
+                              <h5>Họ tên</h5>
+                              <p>{{user.username}}</p>
+                              <i class="far fa-edit mb-5"></i>
+                            </div>
+                            <div class="col-md-8">
+                              <div class="card-body p-4">
+                                <h6>Thông tin</h6>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                  <div class="col-6 mb-3">
+                                    <h6>Email</h6>
+                                    <p class="text-muted">{{user.email}}</p>
+                                  </div>
+                                  <div class="col-6 mb-3">
+                                    <h6>Số điện thoại</h6>
+                                    <p class="text-muted">xxxxxxxxxx</p>
+                                  </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                  <h6>Ngày sinh</h6>
+                                  <p class="text-muted">xx-xx-xxxx</p>
+                                </div>
+                                <div class="col-6 mb-3">
+                                  <h6>Địa chỉ</h6>
+                                  <p class="text-muted">Sao hoả :)</p>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+    </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        &copy; INT2211 24
+      </div>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  {% endblock %}
+
+</body>
+
+</html>

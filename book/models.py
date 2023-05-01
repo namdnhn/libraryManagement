@@ -24,5 +24,5 @@ class Book(models.Model):
     status = models.IntegerField()
 
     def __str__(self):
-        return self.book_id
+        return self.info.title + ' ' + str(self.book_id)
 

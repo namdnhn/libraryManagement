@@ -28,14 +28,6 @@ class User(models.Model):
         return self.account.username
 
 
-class CartItem(models.Model):
-    user = models.OneToOneField(User, models.DO_NOTHING, primary_key=True)
-    book = models.ForeignKey(Book, models.DO_NOTHING)
-
-    def __str__(self):
-        return self.book.book_id
-
-
 class Comment(models.Model):
     id = models.IntegerField(primary_key=True)
     info = models.ForeignKey(Bookinfo, models.DO_NOTHING, blank=True, null=True)
