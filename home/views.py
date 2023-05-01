@@ -12,9 +12,13 @@ Account = get_user_model()
 def index(request):
     if request.user.is_authenticated:
         account = Account.objects.get(username=request.user.username)
-        if not account.user.lname:
-            messages.warning(request, "Please change your profile first!")
-            return redirect('home/profile')
+        try:
+            if not account.user.lname:
+                messages.warning(request, "Please change your profile first!")
+                return redirect('home/profile')
+        except Account.user.RelatedObjectDoesNotExist:
+            return redirect('staff:customers_list')
+
     return render(request, 'pages/home.html')
 
 
