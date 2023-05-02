@@ -2,11 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from user.models import User
 from datetime import datetime
-from rest_framework.decorators import permission_classes
-from .models import StaffOnlyPermission
 
-
-# Create your views here.
 
 def customersListView(request):
     if request.user.is_authenticated and request.user.is_staff:
