@@ -1,4 +1,4 @@
-{% extends "staff_base.html" %}
+{% extends "manager_base.html" %}
 
 {% block content %}
   <main id="main" class="main">
@@ -32,14 +32,14 @@
                     <th scope="col">Gender</th>
                     <th scope="col">Age</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Countdown Expired Date</th>
+                    <th scope="col">Is Activated</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for cus in customers %}
+                  {% for cus in staffs %}
                     <tr>
                       <th scope="row">
-                        <a href="/staff/users/{{ cus.id }}/">
+                        <a href="/store/staffs/{{ cus.id }}/">
                           <i class="bi bi-eye-fill"></i>
                         </a>
                       </th>
@@ -47,7 +47,7 @@
                       <td>{{ cus.gender }}</td>
                       <td>{{ cus.age }}</td>
                       <td>{{ cus.phone }}</td>
-                      <td>{{ cus.countdown }}</td>
+                      <td>{{ cus.activated }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>

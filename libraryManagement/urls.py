@@ -24,7 +24,8 @@ urlpatterns = [
     path('', include('home.urls')),
     path('book/', include('book.urls')),
     path('cart/', include('cart.urls')),
-    path('staff/', include('staff.urls'))
+    path('staff/', include('staff.urls')),
+    path('store/', include('store.urls'))
 ]
 
 handler404 = 'libraryManagement.views.error_404'

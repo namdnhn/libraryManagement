@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
 from django.contrib.auth import get_user_model
@@ -11,12 +11,13 @@ Account = get_user_model()
 
 def index(request):
     if request.user.is_authenticated:
-        account = Account.objects.get(username=request.user.username)
-        try:
-            if not account.user.lname:
+        if not request.user.is_staff:
+            if not request.user.user.lname:
                 messages.warning(request, "Please change your profile first!")
                 return redirect('home/profile')
-        except Account.user.RelatedObjectDoesNotExist:
+        elif request.user.is_staff and request.user.staff.position:
+            return redirect('store:staffs_list')
+        elif request.user.is_staff:
             return redirect('staff:customers_list')
 
     return render(request, 'pages/home.html')

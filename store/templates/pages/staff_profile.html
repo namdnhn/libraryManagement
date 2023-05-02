@@ -1,4 +1,4 @@
-{% extends "staff_base.html" %}
+{% extends "manager_base.html" %}
 
 {% block content %}
   <main id="main" class="main">
@@ -52,11 +52,11 @@
                 </li>
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Expired Date</button>
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Store</button>
                 </li>
 
                 <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Reset Password</button>
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Edit Account</button>
                 </li>
 
               </ul>
@@ -107,8 +107,19 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Expired Date</div>
-                    <div class="col-lg-9 col-md-8">{{ user.expired_date }}</div>
+                    <div class="col-lg-3 col-md-4 label">Is Activated</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% if account.is_active %}
+                        Yes
+                      {% else %}
+                        No
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Store</div>
+                    <div class="col-lg-9 col-md-8">{{ store.address }}</div>
                   </div>
 
                 </div>
@@ -119,17 +130,19 @@
                   <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row mb-3">
-                      <label for="expired_date" class="col-md-4 col-lg-3 col-form-label">Expired Date</label>
+                      <label for="store" class="col-md-4 col-lg-3 col-form-label">Change Store</label>
                       <div class="col-md-8 col-lg-9">
-                        <div class="input-group">
-                            <input name="expired_date" class="form-control" id="expired_date"
-                                   type="date" value="{{ user.expired_date|date:'Y-m-d' }}" required>
-                        </div>
+                        <select name="store" class="form-select mb-0" id="store" aria-label="Store select">
+                            {% for s in stores %}
+                                <option value="{{ s.id }}" {% if store.id == s.id %}selected{% endif %}>
+                                  {{ s.address }}</option>
+                            {% endfor %}
+                        </select>
                       </div>
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit" class="btn btn-primary" name="edit_store">Save Changes</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -139,10 +152,24 @@
                   <!-- Change Password Form -->
                   <form method="post">
                     {% csrf_token %}
-                    <p>Click the below button to reset the password to be the same as the username.</p>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Reset Password</button>
+                    <div class="row mb-3">
+                      <label class="col-md-7 col-form-label">Reset the password to be the same as the username</label>
+                      <div class="col-md-5">
+                        <div class="text-left">
+                          <button type="submit" class="btn btn-primary" name="reset-pass">Reset Password</button>
+                        </div>
+                      </div>
                     </div>
+
+                    <div class="row mb-3">
+                      <label class="col-md-7 col-form-label">Click the below button to deactivate account.</label>
+                      <div class="col-md-5">
+                        <div class="text-left">
+                          <button type="submit" class="btn btn-primary" name="deactivate">Deactivate</button>
+                        </div>
+                      </div>
+                    </div>
+
                   </form><!-- End Change Password Form -->
 
                 </div>
