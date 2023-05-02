@@ -68,7 +68,7 @@
             </ul>
           </li>
           {% else %}
-          <a href="/login">
+          <a href="{% url 'home:login' %}">
             <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
           </a>
           {% endif %}
