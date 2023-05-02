@@ -1,15 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-
 from home.models import Account
 from staff.models import Staff
-from .forms import RegistrationForm
 from .models import Store
 from datetime import datetime
 
 
 def staffsListView(request):
-    if request.user.is_authenticated and request.user.is_staff and request.user.staff.position:
+    if request.user.is_authenticated and request.user.is_active and request.user.is_staff and request.user.staff.position:
         cusList = []
         for d in Staff.objects.all():
             if d.position == 0 and d.store == request.user.staff.store:
@@ -28,7 +26,7 @@ def staffsListView(request):
 
 
 def staff_profile(request, user_id):
-    if request.user.is_authenticated and request.user.is_staff and request.user.staff.position:
+    if request.user.is_authenticated and request.user.is_active and request.user.is_staff and request.user.staff.position:
         user = Staff.objects.get(id=user_id)
         store = Store.objects.get(address=request.user.staff.store)
         stores = Store.objects.all()
@@ -54,7 +52,7 @@ def staff_profile(request, user_id):
 
 
 def staffRegister(request):
-    if request.user.is_authenticated and request.user.is_staff and request.user.staff.position:
+    if request.user.is_authenticated and request.user.is_active and request.user.is_staff and request.user.staff.position:
         if request.method == 'POST':
             fname = request.POST.get('fname')
             lname = request.POST.get('lname')

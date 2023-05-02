@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 def customersListView(request):
-    if request.user.is_authenticated and request.user.is_staff:
+    if request.user.is_authenticated and request.user.is_active and request.user.is_staff:
         cusList = []
         for d in User.objects.all():
             cusList.append({
@@ -22,7 +22,7 @@ def customersListView(request):
 
 
 def user_profile(request, user_id):
-    if request.user.is_authenticated and request.user.is_staff:
+    if request.user.is_authenticated and request.user.is_active and request.user.is_staff:
         user = User.objects.get(id=user_id)
         if request.method == 'POST':
             if 'expired_date' in request.POST:
