@@ -60,7 +60,7 @@ def LogoutPage(request):
 
 def ProfilePage(request):
     if request.user.is_authenticated:
-        account = Account.objects.get(id=request.user.id)
+        user = request.user.staff if request.user.is_staff else request.user.user
         if request.method == 'POST':
             if 'old_password' in request.POST:
                 form = PasswordChangeForm(request.user, request.POST)
@@ -68,9 +68,8 @@ def ProfilePage(request):
                     user = form.save()
                     update_session_auth_hash(request, user)
                     messages.success(request, 'Your password was successfully updated!')
-                return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account, 'form': form})
+                return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user, 'form': form})
             else:
-                user = account.user
                 user.fname = request.POST.get('first_name')
                 user.lname = request.POST.get('last_name')
                 user.birthday = request.POST.get('birthday')
@@ -81,6 +80,6 @@ def ProfilePage(request):
                     user.avatar = request.FILES['avatar']
                 user.save()
 
-        return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})
+        return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user})
 
     return redirect('/')

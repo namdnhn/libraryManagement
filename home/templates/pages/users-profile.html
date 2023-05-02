@@ -390,6 +390,23 @@
                     <div class="col-lg-9 col-md-8">{{ user.address }}</div>
                   </div>
 
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Created Date</div>
+                    <div class="col-lg-9 col-md-8">{{ user.create_date }}</div>
+                  </div>
+
+                  {% if account.is_staff %}
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Store</div>
+                      <div class="col-lg-9 col-md-8">{{ user.store.address }}</div>
+                    </div>
+                  {% else %}
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Expired Date</div>
+                      <div class="col-lg-9 col-md-8">{{ user.expired_date }}</div>
+                    </div>
+                  {% endif %}
+
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
