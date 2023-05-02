@@ -3,6 +3,7 @@ from store.models import Store
 from home.models import Account
 from book.models import Book
 from user.models import User
+from rest_framework.permissions import BasePermission
 
 
 # Create your models here.
@@ -39,3 +40,11 @@ class TransactionItem(models.Model):
 
     def __str__(self):
         return self.book.book_id
+
+
+class StaffOnlyPermission(BasePermission):
+    message = 'Access denied. Only staff members are allowed.'
+
+    def has_permission(self, request, view):
+        print(request.user)
+        return request.user and request.user.is_staff

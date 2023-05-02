@@ -58,25 +58,28 @@ def LogoutPage(request):
 
 
 def ProfilePage(request):
-    account = Account.objects.get(id=request.user.id)
-    if request.method == 'POST':
-        if 'old_password' in request.POST:
-            form = PasswordChangeForm(request.user, request.POST)
-            if form.is_valid():
-                user = form.save()
-                update_session_auth_hash(request, user)
-                messages.success(request, 'Your password was successfully updated!')
-            return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account, 'form': form})
-        else:
-            user = account.user
-            user.fname = request.POST.get('first_name')
-            user.lname = request.POST.get('last_name')
-            user.birthday = request.POST.get('birthday')
-            user.gender = request.POST.get('gender')
-            user.phone = request.POST.get('phone')
-            user.address = request.POST.get('address')
-            if request.FILES:
-                user.avatar = request.FILES['avatar']
-            user.save()
+    if request.user.is_authenticated:
+        account = Account.objects.get(id=request.user.id)
+        if request.method == 'POST':
+            if 'old_password' in request.POST:
+                form = PasswordChangeForm(request.user, request.POST)
+                if form.is_valid():
+                    user = form.save()
+                    update_session_auth_hash(request, user)
+                    messages.success(request, 'Your password was successfully updated!')
+                return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account, 'form': form})
+            else:
+                user = account.user
+                user.fname = request.POST.get('first_name')
+                user.lname = request.POST.get('last_name')
+                user.birthday = request.POST.get('birthday')
+                user.gender = request.POST.get('gender')
+                user.phone = request.POST.get('phone')
+                user.address = request.POST.get('address')
+                if request.FILES:
+                    user.avatar = request.FILES['avatar']
+                user.save()
 
-    return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})
+        return render(request, 'pages/users-profile.html', {'user': account.user, 'account': account})
+
+    return redirect('/')
