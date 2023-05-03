@@ -72,4 +72,10 @@ class Migration(migrations.Migration):
             name="create_date",
             field=models.DateField(auto_now_add=True),
         ),
+        migrations.DeleteModel(
+            name='TransactionItem',
+        ),
+        migrations.DeleteModel(
+            name='Transaction',
+        ),
     ]
