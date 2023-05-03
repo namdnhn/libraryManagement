@@ -11,8 +11,8 @@ class Bookinfo(models.Model):
     book_image = models.ImageField(upload_to='static/assets/img/book', default='static/des/book_cover.png', null=True)
     publisher = models.CharField(max_length=100, blank=True, null=True)
     author = models.CharField(max_length=100)
-    pages = models.IntegerField()
-    cover_price = models.IntegerField()
+    pages = models.IntegerField(default=0)
+    cover_price = models.IntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
 
     def __str__(self):
@@ -21,9 +21,9 @@ class Bookinfo(models.Model):
 
 class Book(models.Model):
     book_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    info = models.ForeignKey(Bookinfo, models.DO_NOTHING)
-    store = models.ForeignKey(Store, models.DO_NOTHING)
-    status = models.IntegerField()
+    info = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.info.title + ' ' + str(self.book_id)
