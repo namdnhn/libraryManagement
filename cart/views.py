@@ -18,7 +18,8 @@ def cart_add(request, id):
     cart.save()
 
     info = Bookinfo.objects.get(id=id)
-    book = Book.objects.get(info=info)
+    books = Book.objects.filter(info=info, status=1)
+    book = books.last()
     is_book_exist = CartItem.objects.filter(book=book, cart=cart).exists()
     if not is_book_exist:
         new_book = CartItem.objects.create(
