@@ -65,21 +65,29 @@ def booksListView(request):
 
 
 @login_required(login_url="/login")
-def bookProfile(request):
+def editBookProfile(request, id):
     if request.user.is_active and request.user.is_staff:
-        cusList = []
-        for d in Bookinfo.objects.all():
-            for ch in Store.objects.all():
-                cusList.append({
-                    'id': d.id,
-                    'title': d.title,
-                    'author': d.author,
-                    'price': d.cover_price,
-                    'store': ch.address,
-                    'available': Book.objects.filter(info=d, store=ch).count()
-                })
+        book = Bookinfo.objects.get(id=id)
+        editmode = False
+        if request.method == 'POST':
+            if 'edit' in request.POST:
+                editmode = True
+            else:
+                editmode = False
+                book.title = request.POST.get('title')
+                book.publisher = request.POST.get('publisher')
+                book.author = request.POST.get('author')
+                book.pages = request.POST.get('pages')
+                book.cover_price = request.POST.get('cover_price')
+                book.rating = request.POST.get('rating')
+                book.description = request.POST.get('description')
+                if request.FILES:
+                    print(request.FILES)
+                    book.book_image = request.FILES['image']
+                book.save()
 
-        return render(request, 'pages/books.html', {'books': cusList})
+        return render(request, 'bookshowing.html', {'book': book, 'account': request.user, 'editmode': editmode})
+
     return redirect('home:home')
 
 
@@ -97,7 +105,8 @@ def addBookView(request):
             author = request.POST.get('author')
             price = request.POST.get('price')
             if not Bookinfo.objects.filter(title=title, author=author, cover_price=price).count():
-                Bookinfo.objects.create(title=title, author=author, cover_price=price, description='', pages=0, rating=0)
+                Bookinfo.objects.create(title=title, author=author, cover_price=price, description='', pages=0,
+                                        rating=0)
 
             info = Bookinfo.objects.get(title=title, author=author, cover_price=price)
             Book.objects.create(info=info, store=request.user.staff.store, status=0)
@@ -105,3 +114,5 @@ def addBookView(request):
 
         return render(request, 'pages/add_book.html', {'bookinfo': data})
     return redirect('home:home')
+
+
