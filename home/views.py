@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
@@ -58,28 +59,27 @@ def LogoutPage(request):
     return redirect('/login')
 
 
+@login_required(login_url="/login")
 def ProfilePage(request):
-    if request.user.is_authenticated:
-        user = request.user.staff if request.user.is_staff else request.user.user
-        if request.method == 'POST':
-            if 'old_password' in request.POST:
-                form = PasswordChangeForm(request.user, request.POST)
-                if form.is_valid():
-                    user = form.save()
-                    update_session_auth_hash(request, user)
-                    messages.success(request, 'Your password was successfully updated!')
-                return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user, 'form': form})
-            else:
-                user.fname = request.POST.get('first_name')
-                user.lname = request.POST.get('last_name')
-                user.birthday = request.POST.get('birthday')
-                user.gender = request.POST.get('gender')
-                user.phone = request.POST.get('phone')
-                user.address = request.POST.get('address')
-                if request.FILES:
-                    user.avatar = request.FILES['avatar']
-                user.save()
+    user = request.user.staff if request.user.is_staff else request.user.user
+    if request.method == 'POST':
+        if 'old_password' in request.POST:
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Your password was successfully updated!')
+            return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user, 'form': form})
+        else:
+            user.fname = request.POST.get('first_name')
+            user.lname = request.POST.get('last_name')
+            user.birthday = request.POST.get('birthday')
+            user.gender = request.POST.get('gender')
+            user.phone = request.POST.get('phone')
+            user.address = request.POST.get('address')
+            if request.FILES:
+                user.avatar = request.FILES['avatar']
+            user.save()
 
-        return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user})
+    return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user})
 
-    return redirect('/')

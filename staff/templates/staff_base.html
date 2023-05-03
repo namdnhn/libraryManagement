@@ -276,19 +276,37 @@
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
         <a class="nav-link collapsed" href="/staff/customers">
-          <i class="bi bi-circle"></i>
+          <i class="bi bi-layout-text-window-reverse"></i>
           <span>Customers</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/staff/customers">
-          <i class="bi bi-circle"></i>
-          <span>Customers 2</span>
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book-half"></i><span>Books</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/staff/books/list">
+              <i class="bi bi-circle"></i><span>Book List</span>
+            </a>
+          </li>
+          <li>
+            <a href="/staff/books/add">
+              <i class="bi bi-circle"></i><span>Add Book</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/staff/transactions">
+          <i class="bi bi-journals"></i>
+          <span>Transaction</span>
         </a>
       </li>
 
-      <li class="nav-heading">Pages</li>
+      <li class="nav-heading">Personal</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="/staff/profile">

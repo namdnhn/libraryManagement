@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Bookinfo
 from django.db.models import Q
+
 
 # Create your views here.
 def bookpage(request, id):
     book = Bookinfo.objects.get(id=id)
     return render(request, 'bookshowing.html', {'book': book})
+
 
 def book_list(request):
     books = Bookinfo.objects.all()
@@ -15,6 +16,7 @@ def book_list(request):
         'books': books
     })
 
+
 def search(request):
     if 'q' in request.GET:
         q = request.GET.get('q')
@@ -22,6 +24,6 @@ def search(request):
         book_count = books.count()
     return render(request, 'booksearch.html', {
         'books': books,
-        'q' : q,
+        'q': q,
         'book_count': book_count
     })

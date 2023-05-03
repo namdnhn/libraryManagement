@@ -1,6 +1,7 @@
 from django.db import models
 from store.models import Store
 
+
 # Create your models here.
 
 class Bookinfo(models.Model):
@@ -17,12 +18,12 @@ class Bookinfo(models.Model):
     def __str__(self):
         return self.title
 
+
 class Book(models.Model):
-    book_id = models.IntegerField(primary_key=True)
+    book_id = models.IntegerField(primary_key=True, auto_created=True)
     info = models.ForeignKey(Bookinfo, models.DO_NOTHING)
     store = models.ForeignKey(Store, models.DO_NOTHING)
     status = models.IntegerField()
 
     def __str__(self):
         return self.info.title + ' ' + str(self.book_id)
-
