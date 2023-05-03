@@ -43,6 +43,9 @@
               <ul>
                 <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
                 <li><strong>Tác giả</strong>: {{book.author}}</li>
+                <li><strong>Số trang</strong>: {{book.pages}}</li>
+                <li><strong>Giá bìa</strong>: {{book.cover_price}}</li>
+                <li><strong>Rating</strong>: {{book.rating}} / 5</li>
               </ul>
               <form method="POST" action="">
                 {% csrf_token %}

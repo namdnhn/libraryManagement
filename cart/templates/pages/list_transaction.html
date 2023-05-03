@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Transaction
+{% endblock %}
+
+{% block header_type %}
+  <header id="header" class="fixed-top header-inner-pages">
+{% endblock %}
+
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home:home' %}">Trang chủ</a></li>
+          <li>List sách</li>
+        </ol>
+        <h2>Sách</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+    <!-- List -->
+    <section id="list" class="list section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Transaction</h2>
+          <p>Hãy kiểm tra lại thông tin đơn mượn</p>
+        </div>
+        <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped text-white">
+                  <thead>
+                    <tr>
+                      <th>Ngày mượn</th>
+                      <th>Ngày trả</th>
+                      <th>Danh sách sách mượn</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for transaction in list_of_transaction %}
+                      <tr">
+                        <td class="text-white">{{ transaction.rental_date }}</td>
+                        <td class="text-white">{{ transaction.return_date }}</td>
+                        <td>
+                          <table class="table table-striped text-white">
+                            <thead>
+                              <tr>
+                                <th>Số thứ tự</th>
+                                <th>Tên sách</th>
+                                <th>Tác giả</th>
+                                <th>Nhà xuất bản</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for item in transaction.transactionitem_set.all %}
+                                <tr>
+                                  <td class="text-white">{{ forloop.counter }}</td>
+                                  <td class="text-white"><a href="{% url 'book:detailed_book' item.book.info.id %}">{{ item.book.info.title }}</a></td>
+                                  <td class="text-white">{{ item.book.info.author }}</td>
+                                  <td class="text-white">{{ item.book.info.publisher }}</td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section><!-- End List Section -->
+    
+
+  </main><!-- End #main -->
+  {% endblock %}
+
+  {% block shortcut%}
+  <div class="col-lg-6 footer-links">
+    <h4>Useful Links</h4>
+    <ul>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home:home' %}">Trang chủ</a></li>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
+    </ul>
+  </div>
+  {% endblock %}

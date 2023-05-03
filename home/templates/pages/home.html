@@ -21,9 +21,9 @@ Library
         <h2>Hàng ngàn tựa sách thú vị đang chờ bạn tìm đọc</h2>
         <div class="d-flex justify-content-center justify-content-lg-start">
           {% if user.username %}
-          <a href="" class="btn-get-started scrollto">Khám phá ngay</a>
+          <a href="{% url 'book:book_list' %}" class="btn-get-started scrollto">Khám phá ngay</a>
           {% else %}
-          <a href="" class="btn-get-started scrollto">Đăng ký ngay</a>
+          <a href="{% url 'home:signup' %}" class="btn-get-started scrollto">Đăng ký ngay</a>
           {% endif %}
         </div>
       </div>

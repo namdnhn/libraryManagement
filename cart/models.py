@@ -1,6 +1,7 @@
 from django.db import models
 from home.models import Account
 from book.models import Book
+from datetime import date, timedelta
 # Create your models here.
 
 class Cart(models.Model):
@@ -17,4 +18,26 @@ class CartItem(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.book.info.title + ' ' + self.book.book_id
+        return self.book.info.title + ' ' + str(self.book.book_id)
+    
+class Transaction(models.Model):
+    id = models.AutoField(primary_key=True, auto_created=True)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, default=None)
+    rental_date = models.DateField(default=date.today)
+    return_date = models.DateField(default=(date.today() + timedelta(days=10)))
+    class Status(models.IntegerChoices):
+        WAIT = 0, 'Waiting'
+        BORROWING = 1, 'Borrowing'
+        RETURNED = 2, 'Returned'
+        EXPIRED = 3, 'Expired'
+
+    status = models.IntegerField(choices=Status.choices, default=Status.WAIT)
+    def __str__(self):
+        return str(self.id)
+
+class TransactionItem(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.transaction.id)

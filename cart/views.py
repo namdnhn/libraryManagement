@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from book.models import Book, Bookinfo
 from django.contrib.auth.decorators import login_required
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Transaction, TransactionItem
+from datetime import datetime, timedelta
+from django.shortcuts import redirect, reverse
 
 
 @login_required(login_url="/login")
@@ -71,3 +73,73 @@ def cart_detail(request):
     return render(request, 'pages/cart.html', {
         'exist': is_cart_exist
     })
+
+def view_transaction(request):
+    current_user = request.user
+    is_cart_exist = Cart.objects.filter(user=request.user).exists()
+    if is_cart_exist:
+        cart = Cart.objects.get(user=current_user)
+        list_item = CartItem.objects.filter(cart=cart)
+        number = list_item.count()
+
+        today = datetime.today()
+        return_date = today + timedelta(days=7)
+
+        return render(request, 'pages/transaction.html', {
+                'exist': is_cart_exist,
+                'list_item': list_item,
+                'number': number,
+                'crr1': current_user.user,
+                'crr2': current_user
+            })
+    else:
+        return render(request, 'pages/transaction.html', {
+                'exist': is_cart_exist
+        })
+
+
+def create_transaction(request):
+    current_user = request.user
+    if request.method == 'POST':
+        borrow_date = request.POST.get('borrow_date')
+        return_date = request.POST.get('return_date')
+        new_transaction = Transaction.objects.create(
+            user = current_user,
+            rental_date = borrow_date,
+            return_date = return_date,
+        )
+
+        is_cart_exist = Cart.objects.filter(user=current_user).exists()
+        if is_cart_exist:
+            cart = Cart.objects.get(user_id=request.user)
+            list_item_cart = CartItem.objects.filter(cart=cart)
+            for item in list_item_cart:
+                TransactionItem.objects.create(
+                    transaction = new_transaction,
+                    book = item.book
+                )
+                product = CartItem.objects.get(cart=cart, book=item.book)
+                product.delete()
+            if not CartItem.objects.filter(cart=cart).exists():
+                cart.delete()
+            return redirect(reverse('cart:transaction_list'))
+        new_transaction.delete()
+        return redirect(reverse('cart:cart_detail'))
+    return redirect(reverse('cart:transaction_view'))
+
+def list_transaction(request):
+    current_user = request.user
+    list_of_transaction = Transaction.objects.filter(user_id=current_user)
+    list_of_items = []
+    for transaction in list_of_transaction:
+        list_of_item = TransactionItem.objects.filter(transaction = transaction)
+        pair = {transaction: list(list_of_item)}
+        list_of_items.append(pair)
+
+    return render(request, 'pages/list_transaction.html', {
+            'list_of_transaction': list_of_transaction,
+            'list_of_items': list_of_items,
+            'crr1': current_user.user,
+            'crr2': current_user
+        })
+    
