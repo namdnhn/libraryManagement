@@ -62,6 +62,13 @@ def LogoutPage(request):
 @login_required(login_url="/login")
 def ProfilePage(request):
     user = request.user.staff if request.user.is_staff else request.user.user
+    if request.user.is_staff and user.position:
+        template = 'manager_base.html'
+    elif request.user.is_staff:
+        template = 'staff_base.html'
+    else:
+        template = 'home_base.html'
+
     if request.method == 'POST':
         if 'old_password' in request.POST:
             form = PasswordChangeForm(request.user, request.POST)
@@ -81,5 +88,5 @@ def ProfilePage(request):
                 user.avatar = request.FILES['avatar']
             user.save()
 
-    return render(request, 'pages/users-profile.html', {'user': user, 'account': request.user})
+    return render(request, 'pages/users-profile.html', {'my_template': template, 'user': user, 'account': request.user})
 
