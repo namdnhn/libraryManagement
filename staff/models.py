@@ -32,7 +32,7 @@ class Staff(models.Model):
 
 
 class Transaction(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, auto_created=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     rental_date = models.DateField()
     return_date = models.DateField()

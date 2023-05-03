@@ -82,3 +82,26 @@ def bookProfile(request):
         return render(request, 'pages/books.html', {'books': cusList})
     return redirect('home:home')
 
+
+@login_required(login_url="/login")
+def addBookView(request):
+    if request.user.is_active and request.user.is_staff:
+        data = {'titles': set(), 'authors': set(), 'prices': set()}
+        for i in Bookinfo.objects.all():
+            data['titles'].add(i.title)
+            data['authors'].add(i.author)
+            data['prices'].add(i.cover_price)
+
+        if request.method == 'POST':
+            title = request.POST.get('title')
+            author = request.POST.get('author')
+            price = request.POST.get('price')
+            if not Bookinfo.objects.filter(title=title, author=author, cover_price=price).count():
+                Bookinfo.objects.create(title=title, author=author, cover_price=price, description='', pages=0, rating=0)
+
+            info = Bookinfo.objects.get(title=title, author=author, cover_price=price)
+            Book.objects.create(info=info, store=request.user.staff.store, status=0)
+            messages.success(request, f'Book {title} is added successfully')
+
+        return render(request, 'pages/add_book.html', {'bookinfo': data})
+    return redirect('home:home')
