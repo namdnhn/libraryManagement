@@ -17,21 +17,12 @@
       <div class="row">
         <div class="col-lg-12">
 
-          <form method="post">
-            {% csrf_token %}
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-4 col-lg-3 justify-content-md-end">
-                  <h5 class="card-title">Transactions</h5>
-                </div>
-                <div class="col-md-8 col-lg-9 container d-flex justify-content-md-end">
-                  <div class="border d-flex align-items-center justify-content-center">
-                    <button type="submit" class="btn btn-primary" name="edit">Edit</button>
-                  </div>
-                </div>
-              </div>
+              <h5 class="card-title">Transactions</h5>
 
+              <form method="post">
+              {% csrf_token %}
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -41,16 +32,19 @@
                     <th scope="col">Username</th>
                     <th scope="col">Countdown Get Book Time</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Borrowed</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for cus in trans %}
-                    <tr>
+                  <tr>
                       <th scope="row">
-                        <a href="/staff/transactions/{{ cus.id }}/">#{{ cus.id }}</a>
+                        <a href="{% url 'staff:transaction_profile' cus.id %}">#{{ cus.id }}</a>
                       </th>
                       <td>{{ cus.customer }}</td>
-                      <td>{{ cus.username }}</td>
+                      <td>
+                          <a href="{% url 'staff:user_profile' cus.user_id %}">{{ cus.username }}</a>
+                      </td>
                       <td>{{ cus.getCountdown }}</td>
                       <td>
                         {% if cus.status == 1 %}
@@ -60,10 +54,11 @@
                         {% else %}
                           <span class="badge rounded-pill bg-success text-light">Done</span>
                         {% endif %}
-                        <!--<select name="status" class="form-select mb-0 badge rounded-pill">
-                            <option value="1" class="bg-warning text-dark" {% if cus.status == key %}selected{% endif %}>Waiting</option>
-                            <option value="2" class="bg-warning text-dark" {% if cus.status == key %}selected{% endif %}>Borrowing</option>
-                        </select>-->
+                      </td>
+                      <td>
+                        <input type="hidden" name="trans_id" value="{{ cus.id }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                {% if not cus.status == 1 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
                       </td>
                     </tr>
                   {% endfor %}
@@ -71,9 +66,10 @@
               </table>
               <!-- End Table with stripped rows -->
 
+              </form>
             </div>
           </div>
-          </form>
+
 
         </div>
       </div>

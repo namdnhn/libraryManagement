@@ -11,7 +11,6 @@ urlpatterns = [
    path('books/add', views.addBookView, name='add_book'),
    path('books/<str:id>/', views.editBookProfile, name='book_profile'),
    path('transactions/<int:id>/', views.transactionProfile, name='transaction_profile'),
-   path('handover', views.handOverTransactionView, name='book_handover'),
-   path('return', views.returnBooksView, name='book_return'),
+   path('transactions', views.handOverTransactionView, name='book_handover'),
    path('profile', ProfilePage, name='profile')
 ]

@@ -44,7 +44,8 @@
                   <form method="post">
                     {% csrf_token %}
                     <div class="col-lg-3 col md-4">
-                      <button type="submit" class="btn btn-outline-danger">Discard Transaction</button>
+                      <button name="discard" type="submit" class="btn btn-outline-danger"
+                        {% if getCountdown >= 0 %}disabled{% endif %}>Discard Transaction</button>
                     </div>
                   </form>
 
@@ -58,6 +59,8 @@
             <div class="card-body">
               <h5 class="card-title">Book Items</h5>
 
+              <form method="post">
+              {% csrf_token %}
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -67,22 +70,39 @@
                     <th scope="col">Countdown Return Date</th>
                     <th scope="col">Returned Date</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Returned</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for cus in items %}
                     <tr>
-                      <th scope="row">{{ cus.id }}</th>
-                      <td>{{ cus.title }}</td>
+                      <th scope="row">{{ cus.shortid }}</th>
+                      <td>
+                        <a href="{% url 'staff:book_profile' cus.bookInfoID %}">{{ cus.title }}</a>
+                      </td>
                       <td>{{ cus.countdown }}</td>
                       <td>{{ cus.returnedDate }}</td>
-                      <td>{{ cus.status }}</td>
+                      <td>
+                        {% if cus.status == 1 %}
+                          <span class="badge rounded-pill bg-warning text-dark">Waiting</span>
+                        {% elif cus.status == 2 %}
+                          <span class="badge rounded-pill bg-info text-light">Borrowing</span>
+                        {% else %}
+                          <span class="badge rounded-pill bg-success text-light">Available</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <input type="hidden" name="book_id" value="{{ cus.id }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                {% if not cus.status == 2 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
+                      </td>
                     </tr>
                   {% endfor %}
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
 
+              </form>
             </div>
           </div>
 

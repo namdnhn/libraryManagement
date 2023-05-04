@@ -53,11 +53,13 @@
                   <input type="hidden" name="book_id" value="{{book.id}}" />
                   <input type="hidden" name="quantity" value="1" />
 
+                  {% if not account.is_staff %}
                   <a href="{% url 'cart:cart_add' book.id %}">
                     <button class="btn btn-outline-success" type="button">
                       Thêm vào giỏ hàng
                     </button>
                   </a>
+                  {% endif %}
                 </form>
                 <br>
                 <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
@@ -136,9 +138,9 @@
                   <br>
                   <div class="text-center">
                     {% if not editmode %}
-                      <button name="edit" class="btn btn-outline-warning" type="submit">Edit</button>
+                      <button name="edit" class="btn btn-outline-warning btn-lg" type="submit">Edit</button>
                     {% else %}
-                      <button name="save" class="btn btn-outline-success" type="submit">Save</button>
+                      <button name="save" class="btn btn-outline-success btn-lg" type="submit">Save</button>
                     {% endif %}
                   </div>
               </form>
