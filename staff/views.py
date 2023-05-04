@@ -58,7 +58,7 @@ def booksListView(request):
                     'author': d.author,
                     'price': d.cover_price,
                     'store': ch.address,
-                    'available': Book.objects.filter(info=d, store=ch).count()
+                    'available': Book.objects.filter(info=d, store=ch, status=Book.Status.AVAILABLE).count()
                 })
 
         return render(request, 'pages/books.html', {'books': cusList})
