@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
+import config
 from book.models import Bookinfo, Book
+from cart.models import Transaction, TransactionItem
 from store.models import Store
 from user.models import User
 from datetime import datetime
@@ -57,7 +58,7 @@ def booksListView(request):
                     'author': d.author,
                     'price': d.cover_price,
                     'store': ch.address,
-                    'available': Book.objects.filter(info=d, store=ch).count()
+                    'available': Book.objects.filter(info=d, store=ch, status=Book.Status.AVAILABLE).count()
                 })
 
         return render(request, 'pages/books.html', {'books': cusList})
@@ -115,4 +116,76 @@ def addBookView(request):
         return render(request, 'pages/add_book.html', {'bookinfo': data})
     return redirect('home:home')
 
+
+@login_required(login_url="/login")
+def transactionProfile(request, id):
+    if request.user.is_active and request.user.is_staff:
+        trans = Transaction.objects.get(id=id)
+        if request.method == 'POST':
+            if 'discard' in request.POST:
+                for i in TransactionItem.objects.filter(transaction=trans):
+                    i.book.status = Book.Status.AVAILABLE
+                    i.book.save()
+                trans.delete()
+                messages.success(request, "Transaction is discarded successfully")
+                return redirect('staff:book_handover')
+
+            else:
+                book = Book.objects.get(book_id=request.POST.get('book_id'))
+                book.status = Book.Status.AVAILABLE
+                book.save()
+                item = TransactionItem.objects.get(book=book, transaction=trans)
+                item.return_date = datetime.now().date()
+                item.save()
+
+        getCountdown = (trans.regis_date - datetime.now().date()).days + config.getBookInterval if trans.trans_status == 1 else 0
+        items = []
+        trans_done = True
+        for i in TransactionItem.objects.filter(transaction=trans):
+            items.append({
+                'id': i.book.book_id,
+                'shortid': str(i.book.book_id)[:8],
+                'title': i.book.info,
+                'bookInfoID': i.book.info.id,
+                'countdown': (trans.rental_date - datetime.now().date()).days + config.returnDateInterval if not i.return_date and trans.rental_date else 0,
+                'returnedDate': i.return_date,
+                'status': i.book.status
+            })
+            if not i.return_date:
+                trans_done = False
+        if trans_done:
+            trans.trans_status = Transaction.Status.DONE
+            trans.save()
+
+        return render(request, 'pages/transaction_profile.html', {'trans': trans, 'items': items, 'getCountdown': getCountdown})
+    return redirect('home:home')
+
+
+@login_required(login_url="/login")
+def handOverTransactionView(request):
+    if request.user.is_active and request.user.is_staff:
+        if request.method == 'POST':
+            trans_id = request.POST.get('trans_id')
+            trans = Transaction.objects.get(id=trans_id)
+            trans.trans_status = Transaction.Status.BORROWING
+            trans.rental_date = datetime.now().date()
+            trans.save()
+
+            for i in TransactionItem.objects.filter(transaction=trans):
+                i.book.status = Book.Status.BORROWING
+                i.book.save()
+
+        cusList = []
+        for d in Transaction.objects.filter(store=request.user.staff.store).order_by('-regis_date'):
+            cusList.append({
+                'id': d.id,
+                'customer': d.user.user.fname + ' ' + d.user.user.lname,
+                'username': d.user,
+                'user_id': d.user.id,
+                'getCountdown': (d.regis_date - datetime.now().date()).days + config.getBookInterval if d.trans_status == 1 else 0,
+                'status': d.trans_status
+            })
+
+        return render(request, 'pages/handovers.html', {'trans': cusList})
+    return redirect('home:home')
 

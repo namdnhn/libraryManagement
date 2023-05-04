@@ -1,0 +1,78 @@
+{% extends "staff_base.html" %}
+
+{% block content %}
+
+    <div class="pagetitle">
+      <h1>Data Tables</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active">Data</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Transactions</h5>
+
+              <form method="post">
+              {% csrf_token %}
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Countdown Get Book Time</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Borrowed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cus in trans %}
+                  <tr>
+                      <th scope="row">
+                        <a href="{% url 'staff:transaction_profile' cus.id %}">#{{ cus.id }}</a>
+                      </th>
+                      <td>{{ cus.customer }}</td>
+                      <td>
+                          <a href="{% url 'staff:user_profile' cus.user_id %}">{{ cus.username }}</a>
+                      </td>
+                      <td>{{ cus.getCountdown }}</td>
+                      <td>
+                        {% if cus.status == 1 %}
+                          <span class="badge rounded-pill bg-warning text-dark">Waiting</span>
+                        {% elif cus.status == 2 %}
+                          <span class="badge rounded-pill bg-info text-light">Borrowing</span>
+                        {% else %}
+                          <span class="badge rounded-pill bg-success text-light">Done</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <input type="hidden" name="trans_id" value="{{ cus.id }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                {% if not cus.status == 1 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

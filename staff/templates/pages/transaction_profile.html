@@ -1,0 +1,112 @@
+{% extends "staff_base.html" %}
+
+{% block content %}
+
+    <div class="pagetitle">
+      <h1>Transaction #{{ trans.id }}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'staff:book_handover' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'staff:book_handover' %}">Tables</a></li>
+          <li class="breadcrumb-item active">Data</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+          <div class="card">
+            <div class="card-body">
+                <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">Information</h5>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Customer</div>
+                    <div class="col-lg-9 col-md-8">{{ trans.user }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Register Date</div>
+                    <div class="col-lg-9 col-md-8">{{ trans.regis_date }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Borrow Date</div>
+                    <div class="col-lg-9 col-md-8">{{ trans.rental_date }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Countdown Get Book Time</div>
+                    <div class="col-lg-9 col-md-8">{{ getCountdown }}</div>
+                  </div>
+
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="col-lg-3 col md-4">
+                      <button name="discard" type="submit" class="btn btn-outline-danger"
+                        {% if getCountdown >= 0 %}disabled{% endif %}>Discard Transaction</button>
+                    </div>
+                  </form>
+
+                </div>
+                </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Book Items</h5>
+
+              <form method="post">
+              {% csrf_token %}
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Book Title</th>
+                    <th scope="col">Countdown Return Date</th>
+                    <th scope="col">Returned Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Returned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cus in items %}
+                    <tr>
+                      <th scope="row">{{ cus.shortid }}</th>
+                      <td>
+                        <a href="{% url 'staff:book_profile' cus.bookInfoID %}">{{ cus.title }}</a>
+                      </td>
+                      <td>{{ cus.countdown }}</td>
+                      <td>{{ cus.returnedDate }}</td>
+                      <td>
+                        {% if cus.status == 1 %}
+                          <span class="badge rounded-pill bg-warning text-dark">Waiting</span>
+                        {% elif cus.status == 2 %}
+                          <span class="badge rounded-pill bg-info text-light">Borrowing</span>
+                        {% else %}
+                          <span class="badge rounded-pill bg-success text-light">Available</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <input type="hidden" name="book_id" value="{{ cus.id }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm"
+                                {% if not cus.status == 2 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+              </form>
+            </div>
+          </div>
+
+        </div>
+    </section>
+
+{% endblock %}

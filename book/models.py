@@ -20,10 +20,15 @@ class Bookinfo(models.Model):
 
 
 class Book(models.Model):
+    class Status(models.IntegerChoices):
+        WAIT = 1, 'Waiting'
+        BORROWING = 2, 'Borrowing'
+        AVAILABLE = 0, 'Available'
+
     book_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     info = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    status = models.IntegerField(default=0)
+    status = models.IntegerField(choices=Status.choices, default=Status.AVAILABLE)
 
     def __str__(self):
         return self.info.title + ' ' + str(self.book_id)

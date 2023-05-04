@@ -1,15 +1,6 @@
 {% extends "staff_base.html" %}
 
 {% block content %}
-  <main id="main" class="main">
-
-    {% for message in messages %}
-      <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-
     <div class="pagetitle">
       <h1>Form Elements</h1>
       <nav>
@@ -81,5 +72,4 @@
       </div>
     </section>
 
-  </main><!-- End #main -->
 {% endblock %}
