@@ -59,8 +59,6 @@
             <div class="card-body">
               <h5 class="card-title">Book Items</h5>
 
-              <form method="post">
-              {% csrf_token %}
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -92,9 +90,12 @@
                         {% endif %}
                       </td>
                       <td>
-                        <input type="hidden" name="book_id" value="{{ cus.id }}">
-                        <button type="submit" class="btn btn-outline-success btn-sm"
-                                {% if not cus.status == 2 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="book_id" value="{{ cus.id }}">
+                          <button type="submit" class="btn btn-outline-success btn-sm"
+                                  {% if not cus.status == 2 %}disabled{% endif %}><i class="bi bi-check-circle"></i></button>
+                        </form>
                       </td>
                     </tr>
                   {% endfor %}
@@ -102,7 +103,6 @@
               </table>
               <!-- End Table with stripped rows -->
 
-              </form>
             </div>
           </div>
 

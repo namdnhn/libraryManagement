@@ -166,6 +166,7 @@ def handOverTransactionView(request):
     if request.user.is_active and request.user.is_staff:
         if request.method == 'POST':
             trans_id = request.POST.get('trans_id')
+            print(trans_id)
             trans = Transaction.objects.get(id=trans_id)
             trans.trans_status = Transaction.Status.BORROWING
             trans.rental_date = datetime.now().date()
@@ -176,7 +177,7 @@ def handOverTransactionView(request):
                 i.book.save()
 
         cusList = []
-        for d in Transaction.objects.filter(store=request.user.staff.store).order_by('-regis_date'):
+        for d in Transaction.objects.filter(store=request.user.staff.store):
             cusList.append({
                 'id': d.id,
                 'customer': d.user.user.fname + ' ' + d.user.user.lname,
