@@ -17,13 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static, settings
 
+from libraryManagement import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('book/', include('book.urls')),
     path('cart/', include('cart.urls')),
-    path('staff/', include('staff.urls'))
+    path('staff/', include('staff.urls')),
+    path('store/', include('store.urls'))
 ]
+
+handler404 = 'libraryManagement.views.error_404'
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,188 @@
+{% extends "manager_base.html" %}
+
+{% block content %}
+  <main id="main" class="main">
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+    <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="/{{ user.avatar }}" alt="Profile" class="rounded-circle">
+              <h2>{{ user.fname }} {{ user.lname }}</h2>
+              <h3>{{ account.username }}</h3>
+              <div class="social-links mt-2">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Store</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Edit Account</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{ user.fname }} {{ user.lname }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Birthday</div>
+                    <div class="col-lg-9 col-md-8">{{ user.birthday }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Gender</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% if user.gender == user.GENDER_FEMALE %}
+                          Femail
+                      {% else %}
+                          Male
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{ account.email }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                    <div class="col-lg-9 col-md-8">{{ user.phone }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">{{ user.address }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Created Date</div>
+                    <div class="col-lg-9 col-md-8">{{ user.create_date }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Is Activated</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% if account.is_active %}
+                        Yes
+                      {% else %}
+                        No
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Store</div>
+                    <div class="col-lg-9 col-md-8">{{ store.address }}</div>
+                  </div>
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <!-- Profile Edit Form -->
+                  <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="store" class="col-md-4 col-lg-3 col-form-label">Change Store</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select name="store" class="form-select mb-0" id="store" aria-label="Store select">
+                            {% for s in stores %}
+                                <option value="{{ s.id }}" {% if store.id == s.id %}selected{% endif %}>
+                                  {{ s.address }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary" name="edit_store">Save Changes</button>
+                    </div>
+                  </form><!-- End Profile Edit Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <!-- Change Password Form -->
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label class="col-md-7 col-form-label">Reset the password to be the same as the username</label>
+                      <div class="col-md-5">
+                        <div class="text-left">
+                          <button type="submit" class="btn btn-primary" name="reset-pass">Reset Password</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label class="col-md-7 col-form-label">Click the below button to deactivate account.</label>
+                      <div class="col-md-5">
+                        <div class="text-left">
+                          <button type="submit" class="btn btn-primary" name="deactivate">Deactivate</button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </form><!-- End Change Password Form -->
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
