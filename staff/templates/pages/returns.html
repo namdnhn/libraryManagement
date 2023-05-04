@@ -27,26 +27,26 @@
                 <thead>
                   <tr>
                     <th scope="col">View</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Countdown Expired Date</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Cover Price</th>
+                    <th scope="col">Store</th>
+                    <th scope="col">Available</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for cus in customers %}
+                  {% for cus in books %}
                     <tr>
                       <th scope="row">
-                        <a href="/staff/users/{{ cus.id }}/">
+                        <a href="/staff/books/{{ cus.id }}/">
                           <i class="bi bi-eye-fill"></i>
                         </a>
                       </th>
-                      <td>{{ cus.name }}</td>
-                      <td>{{ cus.gender }}</td>
-                      <td>{{ cus.age }}</td>
-                      <td>{{ cus.phone }}</td>
-                      <td>{{ cus.countdown }}</td>
+                      <td>{{ cus.title }}</td>
+                      <td>{{ cus.author }}</td>
+                      <td>{{ cus.price }}</td>
+                      <td>{{ cus.store }}</td>
+                      <td>{{ cus.available }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>

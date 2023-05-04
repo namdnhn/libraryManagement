@@ -1,0 +1,82 @@
+{% extends "staff_base.html" %}
+
+{% block content %}
+
+    <div class="pagetitle">
+      <h1>Data Tables</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active">Data</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <form method="post">
+            {% csrf_token %}
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 col-lg-3 justify-content-md-end">
+                  <h5 class="card-title">Transactions</h5>
+                </div>
+                <div class="col-md-8 col-lg-9 container d-flex justify-content-md-end">
+                  <div class="border d-flex align-items-center justify-content-center">
+                    <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Countdown Get Book Time</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cus in trans %}
+                    <tr>
+                      <th scope="row">
+                        <a href="/staff/transactions/{{ cus.id }}/">#{{ cus.id }}</a>
+                      </th>
+                      <td>{{ cus.customer }}</td>
+                      <td>{{ cus.username }}</td>
+                      <td>{{ cus.getCountdown }}</td>
+                      <td>
+                        {% if cus.status == 1 %}
+                          <span class="badge rounded-pill bg-warning text-dark">Waiting</span>
+                        {% elif cus.status == 2 %}
+                          <span class="badge rounded-pill bg-info text-light">Borrowing</span>
+                        {% else %}
+                          <span class="badge rounded-pill bg-success text-light">Done</span>
+                        {% endif %}
+                        <!--<select name="status" class="form-select mb-0 badge rounded-pill">
+                            <option value="1" class="bg-warning text-dark" {% if cus.status == key %}selected{% endif %}>Waiting</option>
+                            <option value="2" class="bg-warning text-dark" {% if cus.status == key %}selected{% endif %}>Borrowing</option>
+                        </select>-->
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+{% endblock %}
