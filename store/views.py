@@ -22,7 +22,7 @@ def staffsListView(request):
                     'activated': 'Yes' if d.account.is_active else 'No'
                 })
 
-        return render(request, 'pages/staffs.html', {'staffs': cusList})
+        return render(request, 'pages/staffs.html', {'staffs': cusList, 'account': request.user})
 
     return redirect('home:home')
 
@@ -81,6 +81,6 @@ def staffRegister(request):
             user.save()
             messages.success(request, "Account is successfully registered")
 
-        return render(request, 'pages/staff_register.html')
+        return render(request, 'pages/staff_register.html', {'account': request.user})
 
     return redirect('home:home')

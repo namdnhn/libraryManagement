@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from .models import Bookinfo
 from django.db.models import Q
@@ -6,7 +7,10 @@ from django.db.models import Q
 # Create your views here.
 def bookpage(request, id):
     book = Bookinfo.objects.get(id=id)
-    return render(request, 'bookshowing.html', {'book': book})
+    expiredAccount = False
+    if not request.user.user.expired_date or request.user.user.expired_date < datetime.now().date():
+        expiredAccount = True
+    return render(request, 'bookshowing.html', {'book': book, 'expiredAccount': expiredAccount})
 
 
 def book_list(request):
