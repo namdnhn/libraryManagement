@@ -25,6 +25,8 @@ def index(request):
 
 
 def LoginPage(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST.get('username')
         pass1 = request.POST.get('password')
@@ -39,6 +41,8 @@ def LoginPage(request):
 
 
 def SignupPage(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -87,6 +91,7 @@ def ProfilePage(request):
             if request.FILES:
                 user.avatar = request.FILES['avatar']
             user.save()
+            messages.success(request, 'Your profile was successfully updated!')
 
     return render(request, 'pages/users-profile.html', {'my_template': template, 'user': user, 'account': request.user})
 

@@ -23,7 +23,7 @@ def customersListView(request):
                 'countdown': (d.expired_date - datetime.now().date()).days if d.expired_date else ''
             })
 
-        return render(request, 'pages/customers.html', {'customers': cusList})
+        return render(request, 'pages/customers.html', {'customers': cusList, 'account': request.user})
     return redirect('home:home')
 
 
@@ -61,7 +61,7 @@ def booksListView(request):
                     'available': Book.objects.filter(info=d, store=ch, status=Book.Status.AVAILABLE).count()
                 })
 
-        return render(request, 'pages/books.html', {'books': cusList})
+        return render(request, 'pages/books.html', {'books': cusList, 'account': request.user})
     return redirect('home:home')
 
 
@@ -113,7 +113,7 @@ def addBookView(request):
             Book.objects.create(info=info, store=request.user.staff.store, status=0)
             messages.success(request, f'Book {title} is added successfully')
 
-        return render(request, 'pages/add_book.html', {'bookinfo': data})
+        return render(request, 'pages/add_book.html', {'bookinfo': data, 'account': request.user})
     return redirect('home:home')
 
 
@@ -157,7 +157,7 @@ def transactionProfile(request, id):
             trans.trans_status = Transaction.Status.DONE
             trans.save()
 
-        return render(request, 'pages/transaction_profile.html', {'trans': trans, 'items': items, 'getCountdown': getCountdown})
+        return render(request, 'pages/transaction_profile.html', {'trans': trans, 'items': items, 'getCountdown': getCountdown, 'account': request.user})
     return redirect('home:home')
 
 
@@ -187,6 +187,6 @@ def handOverTransactionView(request):
                 'status': d.trans_status
             })
 
-        return render(request, 'pages/handovers.html', {'trans': cusList})
+        return render(request, 'pages/handovers.html', {'trans': cusList, 'account': request.user})
     return redirect('home:home')
 
