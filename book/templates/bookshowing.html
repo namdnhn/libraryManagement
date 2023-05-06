@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block header_type %}
-  <header id="header" class="fixed-top header-inner-pages">
-{% endblock %}
+<header id="header" class="fixed-top header-inner-pages">
+  {% endblock %}
 
-{% block content %}
+  {% block content %}
   <main id="main">
 
     <a name="book"></a>
@@ -21,7 +21,6 @@
           <li><a href="{% url 'book:book_list' %}">List sách</a></li>
           <li>{{book.title}}</li>
         </ol>
-        <!-- <h2>{{book.title}}</h2> -->
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -33,11 +32,11 @@
         <div class="product-content row">
 
           {% for message in messages %}
-              <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
+          <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
           <div class="product-content-left row">
             <div class="product-content-left-big-img">
               <img src="{{book.book_image.url}}" alt="">
@@ -48,127 +47,213 @@
             <div class="portfolio-info">
               {% if not editmode %}
               <h3>Thông tin sách: {{book.title}}</h3>
-                <ul>
-                  <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
-                  <li><strong>Tác giả</strong>: {{book.author}}</li>
-                  <li><strong>Số trang</strong>: {{book.pages}}</li>
-                  <li><strong>Giá bìa</strong>: {{book.cover_price}}</li>
-                  <li><strong>Rating</strong>: {{book.rating}} / 5</li>
-                </ul>
-                <form method="POST" action="">
-                  {% csrf_token %}
-                  <input type="hidden" name="book_id" value="{{book.id}}" />
-                  <input type="hidden" name="quantity" value="1" />
+              <ul>
+                <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
+                <li><strong>Tác giả</strong>: {{book.author}}</li>
+                <li><strong>Số trang</strong>: {{book.pages}}</li>
+                <li><strong>Giá bìa</strong>: {{book.cover_price}}</li>
+                {% if score_rate == 0 %}
+                  <li><strong>Rating</strong>: chưa có lượt đánh giá nào</li>
+                {% else %}
+                  <li><strong>Rating</strong>: {{score_rate}} / 5 (đánh giá bởi {{rate_count}} người)</li>
+                {% endif %}
+              </ul>
+              <form method="POST" action="">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{book.id}}" />
+                <input type="hidden" name="quantity" value="1" />
 
-                  {% if not account.is_staff %}
-                  <a href="{% url 'cart:cart_add' book.id %}">
-                    <button class="btn btn-outline-success" type="button">
-                      Thêm vào giỏ hàng
-                    </button>
-                  </a>
-                  {% endif %}
-                </form>
-                <br>
-                <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
-                  <h3 style="color: #ddd;">Giới thiệu</h3>
-                </div>
+                {% if not account.is_staff %}
+                <a href="{% url 'cart:cart_add' book.id %}">
+                  <button class="btn btn-outline-success" type="button">
+                    Thêm vào giỏ hàng
+                  </button>
+                </a>
+                {% endif %}
+              </form>
+              <br>
+              <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
+                <h3 style="color: #ddd;">Giới thiệu</h3>
+              </div>
 
-                  <div class="product-content-right-bottom-content-gioithieu" style="color: #ddd;">
-                    {{book.description}}
-                  </div>
+              <div class="product-content-right-bottom-content-gioithieu" style="color: #ddd;">
+                {{book.description}}
+              </div>
               {% endif %}
 
               {% if account.is_staff %}
               <form method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  {% if editmode %}
-                    <h3><div class="row mb-3">
-                        <p>Thông tin sách</p>
-                        <div>
-                          <input name="title" class="form-control" placeholder="Title" value="{{ book.title }}">
-                        </div>
-                      </div></h3>
-                    <ul>
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Nhà xuất bản</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input name="publisher" class="form-control" value="{{ book.publisher }}">
-                        </div>
-                      </div></li>
-
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Tác giả</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input name="author" class="form-control" value="{{ book.author }}">
-                        </div>
-                      </div></li>
-
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Số trang</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input name="pages" class="form-control" value="{{ book.pages }}">
-                        </div>
-                      </div></li>
-
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Giá bìa</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input name="cover_price" class="form-control" value="{{ book.cover_price }}">
-                        </div>
-                      </div></li>
-
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Rating</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input name="rating" class="form-control" value="{{ book.rating }}">
-                        </div>
-                      </div></li>
-
-                      <li><div class="row mb-3">
-                        <label class="col-md-6 col-lg-4 col-form-label"><strong>Book Image</strong></label>
-                        <div class="col-md-6 col-lg-8">
-                          <input class="form-control" type="file" name="image">
-                        </div>
-                      </div></li>
-
-                    </ul>
-                    <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
-                      <h3 style="color: #ddd;">Giới thiệu</h3>
+                {% csrf_token %}
+                {% if editmode %}
+                <h3>
+                  <div class="row mb-3">
+                    <p>Thông tin sách</p>
+                    <div>
+                      <input name="title" class="form-control" placeholder="Title" value="{{ book.title }}">
                     </div>
-
-                      <div class="mb-3 product-content-right-bottom-content-gioithieu" style="color: #ddd;">
-                        <textarea name="description" class="form-control" placeholder="Description...">{{ book.description }}</textarea>
-                      </div>
-                  {% endif %}
-
-
-                  <br>
-                  <div class="text-center">
-                    {% if not editmode %}
-                      <button name="edit" class="btn btn-outline-warning btn-lg" type="submit">Edit</button>
-                    {% else %}
-                      <button name="save" class="btn btn-outline-success btn-lg" type="submit">Save</button>
-                    {% endif %}
                   </div>
+                </h3>
+                <ul>
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Nhà xuất bản</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input name="publisher" class="form-control" value="{{ book.publisher }}">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Tác giả</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input name="author" class="form-control" value="{{ book.author }}">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Số trang</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input name="pages" class="form-control" value="{{ book.pages }}">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Giá bìa</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input name="cover_price" class="form-control" value="{{ book.cover_price }}">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Rating</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input name="rating" class="form-control" value="{{ book.rating }}">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="row mb-3">
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Book Image</strong></label>
+                      <div class="col-md-6 col-lg-8">
+                        <input class="form-control" type="file" name="image">
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
+                <div class="product-content-right-bottom-content-tilte-item col-sm gioithieu">
+                  <h3 style="color: #ddd;">Giới thiệu</h3>
+                </div>
+
+                <div class="mb-3 product-content-right-bottom-content-gioithieu" style="color: #ddd;">
+                  <textarea name="description" class="form-control"
+                    placeholder="Description...">{{ book.description }}</textarea>
+                </div>
+                {% endif %}
+
+
+                <br>
+                <div class="text-center">
+                  {% if not editmode %}
+                  <button name="edit" class="btn btn-outline-warning btn-lg" type="submit">Edit</button>
+                  {% else %}
+                  <button name="save" class="btn btn-outline-success btn-lg" type="submit">Save</button>
+                  {% endif %}
+                </div>
               </form>
               {% endif %}
-              </div>
-
             </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Đánh giá sách -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 style="color: #ddd;">Thêm đánh giá:</h3>
+            <form method="post" action="{% url 'user:add_rating' book.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="rating_value">Đánh giá:</label>
+                <select class="form-control" id="rating_value" name="rating_value">
+                  <option value="1">1 sao</option>
+                  <option value="2">2 sao</option>
+                  <option value="3">3 sao</option>
+                  <option value="4">4 sao</option>
+                  <option value="5">5 sao</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Comment add -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 style="color: #ddd;">Add a comment:</h3>
+            <form method="post" action="{% url 'user:add_comment' book.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="comment_text" style="color: #ddd;">Comment:</label>
+                <textarea class="form-control" id="comment_text" name="comment_text" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Comment list -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 style="color: #ddd;">Comments: ({{ comments_count }})</h3>
+            {% if comments %}
+            {% for comment in comments %}
+            <div class="card p-3">
+              <div class="d-flex justify-content-between align-items-center">
+
+                <div class="user d-flex flex-row align-items-center">
+
+                  <img src="" width="30" class="user-img rounded-circle mr-2">
+                  <span><small class="font-weight-bold text-primary">{{ comment.user.username }}</small>
+                    <small class="font-weight-bold">{{ comment.comment }}</small></span>
+
+                </div>
+
+
+                <small>{{ comment.created_date }}</small>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p style="color: #ddd;">No comments yet.</p>
+            {% endif %}
+          </div>
         </div>
       </div>
     </section><!-- End Portfolio Details Section -->
 
   </main><!-- End #main -->
 
-{% endblock %}
+  {% endblock %}
 
-{% block shortcut%}
+  {% block shortcut%}
   <div class="col-lg-6 footer-links">
     <h4>Useful Links</h4>
-    <ul>      
+    <ul>
       <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home:home' %}">Trang chủ</a></li>
       <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
     </ul>
   </div>
-{% endblock %}
+  {% endblock %}

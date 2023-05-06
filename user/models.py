@@ -27,12 +27,18 @@ class User(models.Model):
     def __str__(self):
         return self.account.username
 
-
 class Comment(models.Model):
-    id = models.IntegerField(primary_key=True)
-    info = models.ForeignKey(Bookinfo, models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    comment = models.TextField(blank=True, null=True)
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    book = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return self.comment
+    
+
+class Rate(models.Model):
+    book = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    score = models.IntegerField()

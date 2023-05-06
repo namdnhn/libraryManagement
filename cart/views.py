@@ -26,16 +26,17 @@ def cart_add(request, id):
     cart.save()
 
     info = Bookinfo.objects.get(id=id)
-    books = Book.objects.filter(info=info, status=1)
-    book = books.last()
-    is_book_exist = CartItem.objects.filter(book=book, cart=cart).exists()
-    if not is_book_exist:
-        new_book = CartItem.objects.create(
-            book=book,
-            cart=cart,
-            is_active=True
-        )
-    return redirect("/cart/cart-detail/")
+    if Book.objects.filter(info=info, status=0).exists():
+        books = Book.objects.filter(info=info, status=0)
+        book = books.last()
+        if not CartItem.objects.filter(book=book, cart=cart).exists():
+            new_book = CartItem.objects.create(
+                book=book,
+                cart=cart,
+                is_active=True
+            )
+            new_book.save()
+    return redirect('cart:cart_detail')
 
 
 @login_required(login_url="/login")
@@ -50,7 +51,7 @@ def item_clear(request, id):
     number = list_item.count()
     if number == 0:
         cart.delete()
-    return redirect("/cart/cart-detail/")
+    return redirect('cart:cart_detail')
 
 
 def total(cart):
@@ -118,6 +119,7 @@ def create_transaction(request):
 
     current_user = request.user
     if request.method == 'POST':
+        store = request.POST.get('store')
         borrow_date = request.POST.get('borrow_date')
         return_date = request.POST.get('return_date')
         new_transaction = Transaction.objects.create(
@@ -139,10 +141,10 @@ def create_transaction(request):
                 product.delete()
             if not CartItem.objects.filter(cart=cart).exists():
                 cart.delete()
-            return redirect(reverse('cart:transaction_list'))
+            return redirect('cart:transaction_list')
         new_transaction.delete()
-        return redirect(reverse('cart:cart_detail'))
-    return redirect(reverse('cart:transaction_view'))
+        return redirect('cart:cart_detail')
+    return redirect('cart:transaction_view')
 
 
 def list_transaction(request):
