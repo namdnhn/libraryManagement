@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Book information
+{% endblock %}
+
+{% block header_type %}
+<header id="header" class="fixed-top header-inner-pages">
+    {% endblock %}
+
+    {% block content %}
+
+    <main id="main">
+
+        <!-- ======= Breadcrumbs ======= -->
+        <section id="breadcrumbs" class="breadcrumbs">
+            <div class="container">
+
+                <ol>
+                    <li><a href="{% url 'home:home' %}">Trang chủ</a></li>
+                </ol>
+
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+        <!-- List -->
+        <section id="list" class="list section-bg">
+            <div class="container" data-aos="fade-up">
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+
+                <div class="section-title">
+                    <h2>Đổi cơ sở</h2>
+                    <p>Hiện nay Library có {{store_count}} cơ sở, bạn chọn cơ sở nào?</p>
+                </div>
+
+                <div class="row">
+
+                    <div class="row">
+                        {% for store in stores %}
+                        <div class="col-lg-4">
+                            <form method="post" action="{% url 'store:change_store' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="store_id" value="{{ store.id }}">
+                                <button type="submit">
+                                    <div class="member d-flex align-items-center" data-aos="zoom-in"
+                                        data-aos-delay="100">
+                                        <h4>{{store.address}}</h4>
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End List Section -->
+
+
+    </main><!-- End #main -->
+
+    {% endblock %}
+
+    {% block shortcut%}
+    <div class="col-lg-6 footer-links">
+        <h4>Useful Links</h4>
+        <ul>
+            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home:home' %}">Trang chủ</a></li>
+            <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
+        </ul>
+    </div>
+    {% endblock %}

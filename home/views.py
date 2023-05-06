@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from home.forms import RegistrationForm
+from store.models import Store
 from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -66,6 +67,7 @@ def LogoutPage(request):
 @login_required(login_url="/login")
 def ProfilePage(request):
     user = request.user.staff if request.user.is_staff else request.user.user
+    stores = Store.objects.all()
     if request.user.is_staff and user.position:
         template = 'manager_base.html'
     elif request.user.is_staff:
@@ -88,10 +90,16 @@ def ProfilePage(request):
             user.gender = request.POST.get('gender')
             user.phone = request.POST.get('phone')
             user.address = request.POST.get('address')
+            store_id = request.POST.get('store')
+            store = Store.objects.get(id = store_id)
+            user.current_store = store
             if request.FILES:
                 user.avatar = request.FILES['avatar']
             user.save()
             messages.success(request, 'Your profile was successfully updated!')
 
-    return render(request, 'pages/users-profile.html', {'my_template': template, 'user': user, 'account': request.user})
+    return render(request, 'pages/users-profile.html', {'my_template': template, 
+                                                        'user': user, 
+                                                        'account': request.user, 
+                                                        'stores': stores})
 

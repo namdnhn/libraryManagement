@@ -35,7 +35,7 @@
   <!-- ======= Header ======= -->
   {% block header_type %}
   {% endblock %}
-    <div class="container d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
 
       <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
           alt="" class="img-fluid"></a>
@@ -50,7 +50,17 @@
             <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
           </li>
 
+
+          <a>
+            <form action="{% url 'book:search' %}" class="search" method="GET">
+              <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
+            </form>
+          </a>
+
           {% if user.username %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' %}">Store: {{user.user.current_store}}</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -58,8 +68,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a href="{% url 'home:user_profile' %}"> <!--data-gallery="Portfolio" class="portfolio-lightbox preview-link"--> Thông tin cá
-                  nhân</a>
+                <a href="{% url 'home:user_profile' %}"> Thông tin cá nhân</a>
               </li>
               <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">Giỏ sách</a></li>
                <!--<li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
@@ -74,12 +83,6 @@
             <button class="btn btn-outline-success me-2" type="button">Đăng nhập</button>
           </a>
           {% endif %}
-
-          <a>
-            <form action="{% url 'book:search' %}" class="search" method="GET">
-              <input type="text" class="form-control" style="width:90%;" placeholder="Search" name="q" value="{{ q }}">
-            </form>
-          </a>
 
         </ul>
 
