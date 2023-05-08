@@ -5,10 +5,10 @@ Transaction
 {% endblock %}
 
 {% block header_type %}
-  <header id="header" class="fixed-top header-inner-pages">
-{% endblock %}
+<header id="header" class="fixed-top header-inner-pages">
+  {% endblock %}
 
-{% block content %}
+  {% block content %}
   <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -17,9 +17,16 @@ Transaction
 
         <ol>
           <li><a href="{% url 'home:home' %}">Trang chủ</a></li>
-          <li>List sách</li>
+          <li>Transaction</li>
         </ol>
-        <h2>Sách</h2>
+        <h2>Transaction</h2>
+
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -34,91 +41,93 @@ Transaction
 
         {% if exist %}
         <div class="container">
-            <div class="row">
-              <div class="col-md-6 text-white">
-                <h2>Thông tin khách hàng</h2>
-                <form>
-                  <div class="form-group">
-                    <label for="name">Tên khách hàng:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ crr1.lname|add:" "|add:crr1.fname }}" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="phone">Số điện thoại:</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" value="{{crr1.phone}}" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{crr2.email}}" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="store">Cơ sở:</label>
-                    <input type="store" class="form-control" id="store" name="store" value="{{user.user.current_store}}" readonly>
-                  </div>
-                </form>
-                <form method="POST" action="{% url 'cart:transaction_create' %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label for="borrow_date">Ngày đến mượn:</label>
-                      <input type="date" class="form-control" id="borrow_date" name="borrow_date" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="return_date">Ngày trả:</label>
-                      <input type="date" class="form-control" id="return_date" name="return_date" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Lưu đơn mượn</button>
-                </form>
-              </div>
-              <div class="col-md-6 text-white">
-                <h2>Danh sách sách mượn</h2>
-                <table class="table text-white">
-                  <thead>
-                    <tr>
-                      <th scope="col">STT</th>
-                      <th scope="col">Tên sách</th>
-                      <th scope="col">Tác giả</th>
-                      <th scope="col">Giá bìa</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for book in list_item %}
-                      <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ book.book.title }}</td>
-                        <td>{{ book.book.author }}</td>
-                        <td>{{ book.book.cover_price }}</td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-                <style>
-                    .right-align {
-                        text-align: right;
-                    }
-                </style>
-                <p class="right-align">Tổng số sách: {{number}} quyển</p>
-              </div>
+          <div class="row">
+            <div class="col-md-6 text-white">
+              <h2>Thông tin khách hàng</h2>
+              <form>
+                <div class="form-group">
+                  <label for="name">Tên khách hàng:</label>
+                  <input type="text" class="form-control" id="name" name="name"
+                    value="{{ crr1.lname|add:" "|add:crr1.fname }}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Số điện thoại:</label>
+                  <input type="tel" class="form-control" id="phone" name="phone" value="{{crr1.phone}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="email" class="form-control" id="email" name="email" value="{{crr2.email}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="store">Cơ sở:</label>
+                  <input type="store" class="form-control" id="store" name="store" value="{{user.user.current_store}}"
+                    readonly>
+                </div>
+              </form>
+              <form method="POST" action="{% url 'cart:transaction_create' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="borrow_date">Ngày đến mượn:</label>
+                  <input type="date" class="form-control" id="borrow_date" name="borrow_date" required>
+                </div>
+                <div class="form-group">
+                  <label for="return_date">Ngày trả:</label>
+                  <input type="date" class="form-control" id="return_date" name="return_date" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">Lưu đơn mượn</button>
+              </form>
+            </div>
+            <div class="col-md-6 text-white">
+              <h2>Danh sách sách mượn</h2>
+              <table class="table text-white">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên sách</th>
+                    <th scope="col">Tác giả</th>
+                    <th scope="col">Giá bìa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for book in list_item %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ book.book.title }}</td>
+                    <td>{{ book.book.author }}</td>
+                    <td>{{ book.book.cover_price }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <style>
+                .right-align {
+                  text-align: right;
+                }
+              </style>
+              <p class="right-align">Tổng số sách: {{number}} quyển</p>
             </div>
           </div>
+        </div>
 
-          <script>
-            const borrowDateInput = document.getElementById('borrow_date');
-            const returnDateInput = document.getElementById('return_date');
-            
-            borrowDateInput.addEventListener('change', (event) => {
-              const borrowDate = new Date(event.target.value);
-              const returnDate = new Date(borrowDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-              returnDateInput.value = returnDate.toISOString().substr(0, 10);
-            });
-          </script>
-          {% else %}
-        
-          <h5 class="text-center" style="color: #ddd;"> Chưa có thông tin đơn mượn</h5>
-  
-          {% endif %}
+        <script>
+          const borrowDateInput = document.getElementById('borrow_date');
+          const returnDateInput = document.getElementById('return_date');
+
+          borrowDateInput.addEventListener('change', (event) => {
+            const borrowDate = new Date(event.target.value);
+            const returnDate = new Date(borrowDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+            returnDateInput.value = returnDate.toISOString().substr(0, 10);
+          });
+        </script>
+        {% else %}
+
+        <h5 class="text-center" style="color: #ddd;"> Chưa có thông tin đơn mượn</h5>
+
+        {% endif %}
 
       </div>
     </section><!-- End List Section -->
-    
+
 
   </main><!-- End #main -->
   {% endblock %}

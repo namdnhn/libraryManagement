@@ -22,7 +22,7 @@ class CartItem(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.book.info.title + ' ' + str(self.book.book_id)
+        return self.book.title + ' ' + str(self.cart.user.username)
 
 
 class Transaction(models.Model):
