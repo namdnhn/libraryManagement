@@ -1,6 +1,6 @@
 from django.db import models
 from home.models import Account
-from book.models import Book
+from book.models import Book, Bookinfo
 from datetime import date, timedelta
 
 from store.models import Store
@@ -17,7 +17,7 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
 

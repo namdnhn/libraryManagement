@@ -13,6 +13,7 @@ def add_comment(request, book_id):
         comment.save()
     return redirect('book:detailed_book', id=book_id)
 
+
 def add_rating(request, book_id):
     book = Bookinfo.objects.get(id=book_id)
     user = request.user

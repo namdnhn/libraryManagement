@@ -324,22 +324,21 @@
               <tbody id="datarow">
                 {% for book in list_item %}
                 <tr>
-                  <td></td>
+                  <td>{{ forloop.counter }}</td>
                   <td>
-                    <img src="{{book.book.info.book_image.url}}" width="120" height="130" class="hinhdaidien">
+                    <img src="{{book.book.book_image.url}}" width="120" height="130" class="hinhdaidien">
 
                   </td>
 
-                  <td>{{book.book.info.title}}</td>
+                  <td>{{book.book.title}}</td>
 
                   <td class="text-right">1</td>
 
-                  <td class="text-right">{{book.book.info.cover_price}}</td>
+                  <td class="text-right">{{book.book.cover_price}}</td>
 
                   <td>
-                    <!-- Nút xóa, bấm vào sẽ xóa thông tin dựa vào khóa chính `sp_ma` -->
                     <a id="delete_1" data-sp-ma="2" class="btn btn-danger btn-delete-sanpham"
-                      href="{% url 'cart:item_clear' book.book.book_id %}">
+                      href="{% url 'cart:item_clear' book.book.id %}">
                       <i class="fa fa-trash" aria-hidden="true"></i> Xóa
                     </a>
                   </td>

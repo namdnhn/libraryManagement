@@ -51,11 +51,19 @@
                 <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
                 <li><strong>Tác giả</strong>: {{book.author}}</li>
                 <li><strong>Số trang</strong>: {{book.pages}}</li>
-                <li><strong>Giá bìa</strong>: {{book.cover_price}}</li>
+                <li><strong>Giá bìa</strong>: {{book.cover_price}} VNĐ</li>
                 {% if score_rate == 0 %}
                   <li><strong>Rating</strong>: chưa có lượt đánh giá nào</li>
                 {% else %}
                   <li><strong>Rating</strong>: {{score_rate}} / 5 (đánh giá bởi {{rate_count}} người)</li>
+                {% endif %}
+
+                {% if user.username %}
+                  {% if book_count > 0 %}
+                    <li><strong>Tình trạng: </strong>Hiện có {{book_count}} quyển ở cơ sở {{user.user.current_store}}</li>
+                  {% else %}
+                    <li><strong>Tình trạng: Hết hàng</strong></li>
+                  {% endif %}
                 {% endif %}
               </ul>
               <form method="POST" action="">
@@ -64,11 +72,13 @@
                 <input type="hidden" name="quantity" value="1" />
 
                 {% if not account.is_staff %}
-                <a href="{% url 'cart:cart_add' book.id %}">
-                  <button class="btn btn-outline-success" type="button">
-                    Thêm vào giỏ hàng
-                  </button>
-                </a>
+                {% if book_count > 0 %}
+                  <a href="{% url 'cart:cart_add' book.id %}">
+                    <button class="btn btn-outline-success" type="button">
+                      Thêm vào giỏ hàng
+                    </button>
+                  </a>
+                {% endif %}
                 {% endif %}
               </form>
               <br>
@@ -175,6 +185,7 @@
           </div>
         </div>
       </div>
+      {% if user.username %}
       <!-- Đánh giá sách -->
       <div class="container">
         <div class="row">
@@ -213,6 +224,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
       <!-- Comment list -->
       <div class="container">
         <div class="row">

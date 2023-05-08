@@ -85,6 +85,7 @@ def staffRegister(request):
 
     return redirect('home:home')
 
+@login_required(login_url="/login")
 def change_store(request):
     user = request.user
     stores = Store.objects.all()
@@ -93,6 +94,6 @@ def change_store(request):
         if Store.objects.filter(id=store_id).exists():
             store = Store.objects.get(id = store_id)
             user.user.current_store = store
-            user.save()
+            user.user.save()
             messages.success(request, "Store đã được cập nhật")
     return render(request, 'pages/change_store.html', {'stores': stores, 'store_count': stores.count()})

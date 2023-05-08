@@ -25,17 +25,14 @@ def cart_add(request, id):
         )
     cart.save()
 
-    info = Bookinfo.objects.get(id=id)
-    if Book.objects.filter(info=info, status=0).exists():
-        books = Book.objects.filter(info=info, status=0)
-        book = books.last()
-        if not CartItem.objects.filter(book=book, cart=cart).exists():
-            new_book = CartItem.objects.create(
-                book=book,
-                cart=cart,
-                is_active=True
-            )
-            new_book.save()
+    book = Bookinfo.objects.get(id=id)
+    if not CartItem.objects.filter(book=book, cart=cart).exists():
+        new_book = CartItem.objects.create(
+            book=book,
+            cart=cart,
+            is_active=True
+        )
+        new_book.save()
     return redirect('cart:cart_detail')
 
 
@@ -43,7 +40,7 @@ def cart_add(request, id):
 def item_clear(request, id):
     current_user = request.user
     cart = Cart.objects.get(user=current_user)
-    book = Book.objects.get(book_id=id)
+    book = Bookinfo.objects.get(id=id)
     product = CartItem.objects.get(cart=cart, book=book)
     product.delete()
 
@@ -58,7 +55,7 @@ def total(cart):
     list_item = CartItem.objects.filter(cart=cart)
     tt = 0
     for item in list_item:
-        tt += item.book.info.cover_price
+        tt += item.book.cover_price
     return tt
 
 

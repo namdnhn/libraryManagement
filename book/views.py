@@ -1,17 +1,16 @@
 from datetime import datetime
-from django.shortcuts import render
-from .models import Bookinfo
+from django.shortcuts import redirect, render
+from .models import Bookinfo, Book
 from django.db.models import Q
 from user.models import Comment, Rate
+from django.contrib.auth import get_user_model
 
+Account = get_user_model()
 
 # Create your views here.
 def bookpage(request, id):
     book = Bookinfo.objects.get(id=id)
     score_rate = 0
-    expiredAccount = False
-    if not request.user.user.expired_date or request.user.user.expired_date < datetime.now().date():
-        expiredAccount = True
     comments = Comment.objects.filter(book=book)
     rates = Rate.objects.filter(book=book)
     if Rate.objects.filter(book=book).exists():
@@ -19,20 +18,49 @@ def bookpage(request, id):
         for rate in rates:
             sum += rate.score
         score_rate = float(sum) / rates.count()
-    return render(request, 'bookshowing.html', {'book': book, 
-                                                'expiredAccount': expiredAccount, 
-                                                'comments': comments,
-                                                'comments_count': comments.count(),
-                                                'score_rate': round(score_rate, 1), 
-                                                'rate_count': rates.count()})
+        book.rating = score_rate
+        book.save()
+    if request.user.is_authenticated:
+        expiredAccount = False
+        if not request.user.user.expired_date or request.user.user.expired_date < datetime.now().date():
+            expiredAccount = True
+        book_count = Book.objects.filter(info=book, store=request.user.user.current_store, status=0).count()
+        return render(request, 'bookshowing.html', {'book': book, 
+                                                    'book_count': book_count,
+                                                    'expiredAccount': expiredAccount, 
+                                                    'comments': comments,
+                                                    'comments_count': comments.count(),
+                                                    'score_rate': round(score_rate, 1), 
+                                                    'rate_count': rates.count()})
+    else:
+        return render(request, 'bookshowing.html', {'book': book, 
+                                                    'comments': comments,
+                                                    'comments_count': comments.count(),
+                                                    'score_rate': round(score_rate, 1), 
+                                                    'rate_count': rates.count()})
 
 
 def book_list(request):
     books = Bookinfo.objects.all()
+    if request.user.is_authenticated:
+        if request.user.user.current_store:
+            store = request.user.user.current_store
+            book_and_avai = []
+            for book in books:
+                is_available = is_available_in_store(book, store)
+                book_and_avai.append((book, is_available))
+            return render(request, 'booklist.html', {'books': book_and_avai})
 
-    return render(request, 'booklist.html', {
-        'books': books
-    })
+        else:
+            return redirect('store:change_store')
+    else:
+        book_and_avai = []
+        for book in books:
+            book_and_avai.append((book, True))
+        return render(request, 'booklist.html', {'books': book_and_avai})
+    
+def is_available_in_store(book, store):
+    return Book.objects.filter(info=book, store=store, status=0)
 
 
 def search(request):
