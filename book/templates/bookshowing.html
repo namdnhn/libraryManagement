@@ -53,17 +53,17 @@
                 <li><strong>Số trang</strong>: {{book.pages}}</li>
                 <li><strong>Giá bìa</strong>: {{book.cover_price}} VNĐ</li>
                 {% if score_rate == 0 %}
-                  <li><strong>Rating</strong>: chưa có lượt đánh giá nào</li>
+                <li><strong>Rating</strong>: chưa có lượt đánh giá nào</li>
                 {% else %}
-                  <li><strong>Rating</strong>: {{score_rate}} / 5 (đánh giá bởi {{rate_count}} người)</li>
+                <li><strong>Rating</strong>: {{score_rate}} / 5 (đánh giá bởi {{rate_count}} người)</li>
                 {% endif %}
 
                 {% if user.username %}
-                  {% if book_count > 0 %}
-                    <li><strong>Tình trạng: </strong>Hiện có {{book_count}} quyển ở cơ sở {{user.user.current_store}}</li>
-                  {% else %}
-                    <li><strong>Tình trạng: Hết hàng</strong></li>
-                  {% endif %}
+                {% if book_count > 0 %}
+                <li><strong>Tình trạng: </strong>Hiện có {{book_count}} quyển ở cơ sở {{user.user.current_store}}</li>
+                {% else %}
+                <li><strong>Tình trạng: Hết hàng</strong></li>
+                {% endif %}
                 {% endif %}
               </ul>
               <form method="POST" action="">
@@ -73,11 +73,11 @@
 
                 {% if not account.is_staff %}
                 {% if book_count > 0 %}
-                  <a href="{% url 'cart:cart_add' book.id %}">
-                    <button class="btn btn-outline-success" type="button">
-                      Thêm vào giỏ hàng
-                    </button>
-                  </a>
+                <a href="{% url 'cart:cart_add' book.id %}">
+                  <button class="btn btn-outline-success" type="button">
+                    Thêm vào giỏ hàng
+                  </button>
+                </a>
                 {% endif %}
                 {% endif %}
               </form>
@@ -186,6 +186,7 @@
         </div>
       </div>
       {% if user.username %}
+      {% if not did_rate %}
       <!-- Đánh giá sách -->
       <div class="container">
         <div class="row">
@@ -208,6 +209,30 @@
           </div>
         </div>
       </div>
+      {% else %}
+      <!-- Sửa đánh giá -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 style="color: #ddd;">Thêm đánh giá:</h3>
+            <form method="post" action="{% url 'user:edit_rating' book.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="rating_value">Đánh giá:</label>
+                <select class="form-control" id="rating_value" name="rating_value">
+                  <option value="1">1 sao</option>
+                  <option value="2">2 sao</option>
+                  <option value="3">3 sao</option>
+                  <option value="4">4 sao</option>
+                  <option value="5">5 sao</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Sửa đánh giá</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endif %}
       <!-- Comment add -->
       <div class="container">
         <div class="row">

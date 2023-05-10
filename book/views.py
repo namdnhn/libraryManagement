@@ -13,6 +13,7 @@ def bookpage(request, id):
     score_rate = 0
     comments = Comment.objects.filter(book=book)
     rates = Rate.objects.filter(book=book)
+    did_rate = Rate.objects.filter(book=book, user=request.user).exists()
     if Rate.objects.filter(book=book).exists():
         sum = 0
         for rate in rates:
@@ -31,13 +32,15 @@ def bookpage(request, id):
                                                     'comments': comments,
                                                     'comments_count': comments.count(),
                                                     'score_rate': round(score_rate, 1), 
-                                                    'rate_count': rates.count()})
+                                                    'rate_count': rates.count(),
+                                                    'did_rate': did_rate})
     else:
         return render(request, 'bookshowing.html', {'book': book, 
                                                     'comments': comments,
                                                     'comments_count': comments.count(),
                                                     'score_rate': round(score_rate, 1), 
-                                                    'rate_count': rates.count()})
+                                                    'rate_count': rates.count(),
+                                                    'did_rate': did_rate})
 
 
 def book_list(request):

@@ -34,7 +34,7 @@ class Comment(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     book = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
     comment = models.TextField()
-    created_date = models.DateField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.comment
