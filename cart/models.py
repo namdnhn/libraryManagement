@@ -36,7 +36,6 @@ class Transaction(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     regis_date = models.DateField(default=date.today)
     rental_date = models.DateField(null=True, blank=True)
-    return_date = models.DateField(default=(date.today() + timedelta(days=7)))
     trans_status = models.IntegerField(choices=Status.choices, default=Status.WAIT)
 
     def __str__(self):

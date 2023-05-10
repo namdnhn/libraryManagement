@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cartitem',
             name='book',
-            field=models.ForeignKey(default='1', on_delete=django.db.models.deletion.CASCADE, to='book.bookinfo'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='book.bookinfo'),
             preserve_default=False,
         ),
     ]

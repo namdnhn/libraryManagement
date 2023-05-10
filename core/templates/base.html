@@ -85,11 +85,9 @@
               Hello, {{user.username}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a href="{% url 'home:user_profile' %}"> Thông tin cá nhân</a>
-              </li>
+              <li><a href="{% url 'home:user_profile' %}"> Thông tin cá nhân</a></li>
               <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">Giỏ sách</a></li>
-               <!--<li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
+              <li><a class="dropdown-item" href="{% url 'cart:transaction_list' %}">Lịch sử đơn hàng</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>

@@ -90,9 +90,6 @@ def view_transaction(request):
         list_item = CartItem.objects.filter(cart=cart)
         number = list_item.count()
 
-        today = datetime.today()
-        return_date = today + timedelta(days=7)
-
         return render(request, 'pages/transaction.html', {
             'exist': is_cart_exist,
             'list_item': list_item,
@@ -116,14 +113,9 @@ def create_transaction(request):
 
     current_user = request.user
     if request.method == 'POST':
-        borrow_date = request.POST.get('borrow_date')
-        return_date = request.POST.get('return_date')
         new_transaction = Transaction.objects.create(
             user=current_user,
-            store=current_user.user.current_store,
-            rental_date=borrow_date,
-            return_date=return_date,
-            trans_status = 1,
+            store=current_user.user.current_store
         )
 
         if Cart.objects.filter(user=current_user).exists():
@@ -140,11 +132,11 @@ def create_transaction(request):
                         transaction=new_transaction,
                         book=book
                     )
-                    book.status = 1
+                    book.status = Book.Status.WAIT
                     book.save()
                 else:
                     # nếu không tồn tại thì tự động xóa quyển sách đó khỏi giỏ hàng
-                    messages.error(request, 'Rất tiếc, quyển ' + str(item.book.title) 
+                    messages.error(request, 'Rất tiếc, quyển ' + str(item.book.title)
                                    + ' hiện không còn tại cơ sở ' + str(request.user.user.current_store))
                     product = CartItem.objects.get(cart=cart, book=item.book)
                     product.delete()
@@ -161,6 +153,16 @@ def create_transaction(request):
 
 def list_transaction(request):
     current_user = request.user
+    if request.method == 'POST':
+        trans_id = request.POST.get('trans_id')
+        del_trans = Transaction.objects.get(id=trans_id)
+        for item in TransactionItem.objects.filter(transaction=del_trans):
+            item.book.status = Book.Status.AVAILABLE
+            item.book.save()
+            item.delete()
+        del_trans.delete()
+        messages.success(request, "Xoá giao dịch thành công!")
+
     list_of_transaction = Transaction.objects.filter(user_id=current_user)
     list_of_items = []
     for transaction in list_of_transaction:

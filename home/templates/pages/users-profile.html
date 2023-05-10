@@ -130,11 +130,6 @@
                     </div>
                   {% endif %}
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Current Store</div>
-                    <div class="col-lg-9 col-md-8">{{ user.current_store.address }}</div>
-                  </div>
-
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
@@ -210,17 +205,6 @@
                       <div class="col-md-8 col-lg-9">
                         <input name="address" class="form-control" id="address" type="text"
                                            placeholder="Enter your home address" value="{{ user.address|default:'' }}">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="store" class="col-md-4 col-lg-3 col-form-label">Current Store</label>
-                      <div class="col-md-8 col-lg-9">
-                        <select name="store" id="store">
-                          {% for store in stores %}
-                              <option value="{{ store.id }}">{{ store.address }}</option>
-                          {% endfor %}
-                        </select>
                       </div>
                     </div>
 

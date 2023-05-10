@@ -46,7 +46,9 @@
                       <td>
                         {% if cus.status == 1 %}
                           <span class="badge rounded-pill bg-warning text-dark">Waiting</span>
-                        {% elif cus.status == 2 %}
+                        {% elif cus.overdue %}
+                          <span class="badge rounded-pill bg-danger text-light">Overdue</span>
+                          {% elif cus.status == 2 %}
                           <span class="badge rounded-pill bg-info text-light">Borrowing</span>
                         {% else %}
                           <span class="badge rounded-pill bg-success text-light">Done</span>

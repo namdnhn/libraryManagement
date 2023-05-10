@@ -184,7 +184,8 @@ def handOverTransactionView(request):
                 'username': d.user,
                 'user_id': d.user.id,
                 'getCountdown': (d.regis_date - datetime.now().date()).days + config.getBookInterval if d.trans_status == 1 else 0,
-                'status': d.trans_status
+                'status': d.trans_status,
+                'overdue': 1 if d.trans_status == Transaction.Status.BORROWING and (d.rental_date - datetime.now().date()).days + config.returnDateInterval < 0 else 0
             })
 
         return render(request, 'pages/handovers.html', {'trans': cusList, 'account': request.user})
