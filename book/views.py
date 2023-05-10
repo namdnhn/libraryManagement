@@ -76,3 +76,12 @@ def search(request):
         'q': q,
         'book_count': book_count
     })
+
+def view_book_by_genre(request, genre):
+    books = Bookinfo.objects.order_by('-title').filter(Q(genre__icontains=genre))
+    book_count = books.count()
+    return render(request, 'booksearchbygenre.html', {
+        'books': books,
+        'q': genre,
+        'book_count': book_count
+    })

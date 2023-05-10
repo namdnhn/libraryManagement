@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Book information
+{% endblock %}
+
+{% block header_type %}
+  <header id="header" class="fixed-top header-inner-pages">
+{% endblock %}
+
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home:home' %}">Trang chủ</a></li>
+          <li>List sách</li>
+        </ol>
+        <h2>Sách</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
+    <!-- List -->
+    <section id="list" class="list section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Thể loại {{q}}</h2>
+          <p>Có {{ book_count }} quyển</p>
+        </div>
+
+        <div class="row">
+
+          <div class="row">
+            {% for book in books %}
+            <div class="col-lg-4">
+              <a href="{% url 'book:detailed_book' book.id %}">
+                <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
+                  <div class="pic"><img src="{{book.book_image.url}}" class="img-fluid" alt=""></div>
+                  <div class="member-info">
+                    <h4>{{book.title}}</h4>
+                    <div class="portfolio-info">
+                      <ul>
+                        <li><strong>Tác giả</strong>: {{book.author}}</li>
+                        <li><strong>Giá thuê/ngày</strong>: {{book.cover_price}} VNĐ</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End List Section -->
+    
+
+  </main><!-- End #main -->
+
+  {% endblock %}
+
+  {% block shortcut%}
+  <div class="col-lg-6 footer-links">
+    <h4>Useful Links</h4>
+    <ul>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'home:home' %}">Trang chủ</a></li>
+      <li><i class="bx bx-chevron-right"></i> <a href="{% url 'book:book_list' %}">List sách</a></li>
+    </ul>
+  </div>
+  {% endblock %}

@@ -39,7 +39,6 @@ def edit_rating(request, book_id):
     if request.method == 'POST' and 'rating_value' in request.POST:
         rating_value = int(request.POST.get('rating_value'))
         if rating_value and rating_value >= 1 and rating_value <= 5:
-            # Kiểm tra xem user đã đánh giá sách này chưa
             if Rate.objects.filter(user=user, book=book).exists():
                 rating = Rate.objects.get(book=book, user=user)
                 rating.score = rating_value
