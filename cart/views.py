@@ -122,12 +122,24 @@ def create_transaction(request):
 
         if Cart.objects.filter(user=current_user, store=current_user.user.current_store).exists():
             # kiểm tra xem có tồn tại giỏ hàng không
-            cart = Cart.objects.get(user_id=request.user)
+            cart = Cart.objects.get(user_id=request.user, store=current_user.user.current_store)
             # lấy các item trong giỏ là các book info
             list_item_cart = CartItem.objects.filter(cart=cart)
+            # Kiểm tra xem có quyển nào hết hàng không?
+            check1 = False
             for item in list_item_cart:
-                if Book.objects.filter(info=item.book, status=0).exists():
-                    # nếu tồn tại sách của info tương ứng thì lấy quyển đó cho vào trong Transaction
+                if not Book.objects.filter(info=item.book, status=0).exists():
+                    messages.error(request, 'Rất tiếc, quyển ' + str(item.book.title)
+                                   + ' hiện không còn tại cơ sở ' + str(request.user.user.current_store))
+                    product = CartItem.objects.get(cart=cart, book=item.book)
+                    product.delete()
+                    check1 = True
+            # nếu có quyển nào đó hết hàng
+            if check1:
+                return redirect('cart:transaction_view')
+            # Nếu tất cả các quyển đều thông qua
+            else:
+                for item in list_item_cart:
                     books = Book.objects.filter(info=item.book, status=0)
                     book = books.last()
                     TransactionItem.objects.create(
@@ -136,20 +148,13 @@ def create_transaction(request):
                     )
                     book.status = Book.Status.WAIT
                     book.save()
-                else:
-                    # nếu không tồn tại thì tự động xóa quyển sách đó khỏi giỏ hàng
-                    messages.error(request, 'Rất tiếc, quyển ' + str(item.book.title)
-                                   + ' hiện không còn tại cơ sở ' + str(request.user.user.current_store))
-                    product = CartItem.objects.get(cart=cart, book=item.book)
-                    product.delete()
-                    return redirect('cart:transaction_view')
-                products = CartItem.objects.filter(cart=cart)
-                products.delete()
-            if not CartItem.objects.filter(cart=cart).exists():
-                cart.delete()
-            return redirect('cart:transaction_list')
-        new_transaction.delete()
-        return redirect('cart:cart_detail')
+                list_item_cart.delete()
+                if not CartItem.objects.filter(cart=cart).exists():
+                    cart.delete()
+                return redirect('cart:transaction_list')
+        else:
+            new_transaction.delete()
+            return redirect('cart:cart_detail')
     return redirect('cart:transaction_view')
 
 
