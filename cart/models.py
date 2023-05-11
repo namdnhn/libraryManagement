@@ -11,6 +11,7 @@ from store.models import Store
 class Cart(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE, default=None)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.user.username

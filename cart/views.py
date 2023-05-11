@@ -18,10 +18,11 @@ def cart_add(request, id):
 
     current_user = request.user
     try:
-        cart = Cart.objects.get(user=current_user)
+        cart = Cart.objects.get(user=current_user, store=current_user.user.current_store)
     except Cart.DoesNotExist:
         cart = Cart.objects.create(
-            user=current_user
+            user=current_user,
+            store=current_user.user.current_store
         )
     cart.save()
 
@@ -39,7 +40,7 @@ def cart_add(request, id):
 @login_required(login_url="/login")
 def item_clear(request, id):
     current_user = request.user
-    cart = Cart.objects.get(user=current_user)
+    cart = Cart.objects.get(user=current_user, store=current_user.user.current_store)
     book = Bookinfo.objects.get(id=id)
     product = CartItem.objects.get(cart=cart, book=book)
     product.delete()
@@ -61,9 +62,10 @@ def total(cart):
 
 @login_required(login_url="/login")
 def cart_detail(request):
-    is_cart_exist = Cart.objects.filter(user=request.user).exists()
+    current_user = request.user
+    is_cart_exist = Cart.objects.filter(user=request.user, store=current_user.user.current_store).exists()
     if is_cart_exist:
-        cart = Cart.objects.get(user_id=request.user)
+        cart = Cart.objects.get(user_id=request.user, store=current_user.user.current_store)
         list_item = CartItem.objects.filter(cart=cart)
         tt = total(cart)
         number = list_item.count()
@@ -84,9 +86,9 @@ def cart_detail(request):
 
 def view_transaction(request):
     current_user = request.user
-    is_cart_exist = Cart.objects.filter(user=request.user).exists()
+    is_cart_exist = Cart.objects.filter(user=request.user, store=current_user.user.current_store).exists()
     if is_cart_exist:
-        cart = Cart.objects.get(user=current_user)
+        cart = Cart.objects.get(user=current_user, store=current_user.user.current_store)
         list_item = CartItem.objects.filter(cart=cart)
         number = list_item.count()
 
@@ -118,7 +120,7 @@ def create_transaction(request):
             store=current_user.user.current_store
         )
 
-        if Cart.objects.filter(user=current_user).exists():
+        if Cart.objects.filter(user=current_user, store=current_user.user.current_store).exists():
             # kiểm tra xem có tồn tại giỏ hàng không
             cart = Cart.objects.get(user_id=request.user)
             # lấy các item trong giỏ là các book info
