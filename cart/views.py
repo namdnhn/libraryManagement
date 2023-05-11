@@ -136,6 +136,9 @@ def create_transaction(request):
                     check1 = True
             # nếu có quyển nào đó hết hàng
             if check1:
+                if not CartItem.objects.filter(cart=cart).exists():
+                    cart.delete()
+                new_transaction.delete()
                 return redirect('cart:transaction_view')
             # Nếu tất cả các quyển đều thông qua
             else:
