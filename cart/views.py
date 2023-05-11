@@ -169,8 +169,11 @@ def list_transaction(request):
     list_of_items = []
     for transaction in list_of_transaction:
         list_of_item = TransactionItem.objects.filter(transaction=transaction)
-        pair = {transaction: list(list_of_item)}
-        list_of_items.append(pair)
+        if list_of_item.count() <= 0:
+            transaction.delete()
+        else:
+            pair = {transaction: list(list_of_item)}
+            list_of_items.append(pair)
 
     return render(request, 'pages/list_transaction.html', {
         'list_of_transaction': list_of_transaction,
