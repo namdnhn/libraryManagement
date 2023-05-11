@@ -69,6 +69,7 @@ def is_available_in_store(book, store):
 def search(request):
     if 'q' in request.GET:
         q = request.GET.get('q')
+        print(q)
         books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q))
         book_count = books.count()
     return render(request, 'booksearch.html', {
@@ -82,6 +83,6 @@ def view_book_by_genre(request, genre):
     book_count = books.count()
     return render(request, 'booksearchbygenre.html', {
         'books': books,
-        'q': genre,
+        'genre': genre,
         'book_count': book_count
     })
