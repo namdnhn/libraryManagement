@@ -39,6 +39,9 @@ class Transaction(models.Model):
     rental_date = models.DateField(null=True, blank=True)
     trans_status = models.IntegerField(choices=Status.choices, default=Status.WAIT)
 
+    def get_trans_status_label(self):
+        return self.get_trans_status_display()
+    
     def __str__(self):
         return str(self.id)
 

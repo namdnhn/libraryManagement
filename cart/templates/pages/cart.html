@@ -214,16 +214,15 @@
             <a class="nav-link active" aria-current="page" href="{% url 'home:home' %}">Trang chủ</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
-          </li>
-
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="{% url 'book:book_list' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-              Thể loại
+              List sách
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a>
+              </li>
               <li>
                 <a href="{% url 'book:view_book_by_genre' "thiếu nhi" %}"> Truyện thiếu nhi</a>
               </li>
