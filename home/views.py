@@ -90,9 +90,6 @@ def ProfilePage(request):
             user.gender = request.POST.get('gender')
             user.phone = request.POST.get('phone')
             user.address = request.POST.get('address')
-            store_id = request.POST.get('store')
-            store = Store.objects.get(id = store_id)
-            user.current_store = store
             if request.FILES:
                 user.avatar = request.FILES['avatar']
             user.save()
@@ -100,6 +97,5 @@ def ProfilePage(request):
 
     return render(request, 'pages/users-profile.html', {'my_template': template, 
                                                         'user': user, 
-                                                        'account': request.user, 
-                                                        'stores': stores})
+                                                        'account': request.user})
 
