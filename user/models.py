@@ -24,7 +24,7 @@ class User(models.Model):
     account = models.OneToOneField(Account, related_name="user", on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
     expired_date = models.DateField(null=True, blank=True)
-    current_store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    current_store = models.ForeignKey(Store, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.account.username
