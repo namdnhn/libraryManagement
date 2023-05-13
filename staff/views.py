@@ -105,6 +105,7 @@ def addBookView(request):
             title = request.POST.get('title')
             author = request.POST.get('author')
             price = request.POST.get('price')
+            count = int(request.POST.get('count'))
             genre = ''
             if 'genre' in request.POST:
                 genre = ', '.join([config.genres[s] for s in dict(request.POST)['genre']])
@@ -118,8 +119,21 @@ def addBookView(request):
                 info.save()
 
             info = Bookinfo.objects.get(title=title, author=author, cover_price=price)
-            Book.objects.create(info=info, store=request.user.staff.store, status=0)
-            messages.success(request, f'Book {title} is added successfully')
+            if count > 0:
+                for i in range(count):
+                    Book.objects.create(info=info, store=request.user.staff.store, status=0)
+                messages.success(request, f'Book {title} is added successfully')
+            else:
+                availBook = Book.objects.filter(info=info, store=request.user.staff.store, status=0)
+                if availBook.count() < abs(count):
+                    messages.error(request, "Not enough available books in store to export!")
+                else:
+                    for b in availBook:
+                        if count == 0:
+                            break
+                        b.delete()
+                        count += 1
+                    messages.success(request, f'Book {title} is exported successfully')
 
         return render(request, 'pages/add_book.html', {'bookinfo': data, 'account': request.user, 'genres': config.genres.items()})
     return redirect('home:home')
