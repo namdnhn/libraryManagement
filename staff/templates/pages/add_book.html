@@ -59,6 +59,17 @@
                   </div>
                 </div>
 
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Genres</label>
+                  <div class="col-sm-9">
+                    <select name="genre" data-placeholder="Để trống nếu sách đã có trong kho" multiple class="chosen-select">
+                      {% for id, genre in genres %}
+                      <option value={{ id }}>{{ genre }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary">Add book</button>
                 </div>

@@ -28,6 +28,23 @@
     .gradient-custom {
       background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgb(166, 76, 85, 1))
     }
+    .breadcrumbs {
+      padding: 15px 0;
+    }
+    #header {
+      padding: 0 !important;
+    }
+    #header-container {
+      padding: 10px 0;
+    }
+    @media (max-width: 990px) {
+      #header-container {
+        padding: 15px 0;
+      }
+    }
+    p {
+     margin: 0;
+    }
   </style>
 </head>
 
@@ -35,7 +52,7 @@
   <!-- ======= Header ======= -->
   {% block header_type %}
   {% endblock %}
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container d-flex align-items-center justify-content-between" id="header-container">
 
       <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
           alt="" class="img-fluid"></a>
@@ -52,18 +69,19 @@
               List sách
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "thiếu nhi" %}"> Truyện thiếu nhi</a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "tiểu thuyết nước ngoài" %}"> Tiểu thuyết nước ngoài</a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "self-help" %}"> Self-help</a>
-              </li>
+              <li><a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Chính trị' %}">Chính trị</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Pháp luật' %}">Pháp luật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Khoa học công nghệ' %}">Khoa học công nghệ</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Kinh tế' %}">Kinh tế</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn học nghệ thuật' %}">Văn học nghệ thuật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn hoá xã hội' %}">Văn hoá xã hội</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Lịch sử' %}">Lịch sử</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Giáo trình' %}">Giáo trình</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Truyện, tiểu thuyết' %}">Truyện, tiểu thuyết</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm lý' %}">Tâm lý</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm linh, tôn giáo' %}">Tâm linh, tôn giáo</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Thiếu nhi' %}">Thiếu nhi</a></li>
             </ul>
           </li>
 
@@ -75,9 +93,11 @@
           </a>
 
           {% if user.username %}
+          {% if not user.is_staff %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' %}">Store: {{user.user.current_store}}</a>
           </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -85,8 +105,10 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a href="{% url 'home:user_profile' %}"> Thông tin cá nhân</a></li>
+              {% if not user.is_staff %}
               <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">Giỏ sách</a></li>
               <li><a class="dropdown-item" href="{% url 'cart:transaction_list' %}">Lịch sử đơn hàng</a></li>
+              {% endif %}
               <li>
                 <hr class="dropdown-divider">
               </li>

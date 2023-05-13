@@ -136,10 +136,10 @@ def create_transaction(request):
                     check1 = True
             # nếu có quyển nào đó hết hàng
             if check1:
+                new_transaction.delete()
                 if not CartItem.objects.filter(cart=cart).exists():
                     cart.delete()
-                new_transaction.delete()
-                return redirect('cart:transaction_view')
+                return redirect('cart:cart_detail')
             # Nếu tất cả các quyển đều thông qua
             else:
                 for item in list_item_cart:
@@ -152,9 +152,11 @@ def create_transaction(request):
                     book.status = Book.Status.WAIT
                     book.save()
                 list_item_cart.delete()
-                if not CartItem.objects.filter(cart=cart).exists():
-                    cart.delete()
-                return redirect('cart:transaction_list')
+
+            if not CartItem.objects.filter(cart=cart).exists():
+                cart.delete()
+            messages.info(request, "Lưu đơn mượn thành công. Vui lòng đến nhận sách trong vòng 3 ngày hoặc đơn sẽ tự huỷ.")
+            return redirect('cart:transaction_list')
         else:
             new_transaction.delete()
             return redirect('cart:cart_detail')

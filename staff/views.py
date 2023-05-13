@@ -87,7 +87,7 @@ def editBookProfile(request, id):
                     book.book_image = request.FILES['image']
                 book.save()
 
-        return render(request, 'bookshowing.html', {'book': book, 'account': request.user, 'editmode': editmode})
+        return render(request, 'bookshowing.html', {'book': book, 'account': request.user, 'editmode': editmode, 'genres': config.genres.items()})
 
     return redirect('home:home')
 
@@ -105,15 +105,23 @@ def addBookView(request):
             title = request.POST.get('title')
             author = request.POST.get('author')
             price = request.POST.get('price')
+            genre = ''
+            if 'genre' in request.POST:
+                genre = ', '.join([config.genres[s] for s in dict(request.POST)['genre']])
+
             if not Bookinfo.objects.filter(title=title, author=author, cover_price=price).count():
                 Bookinfo.objects.create(title=title, author=author, cover_price=price, description='', pages=0,
-                                        rating=0)
+                                        rating=0, genre=genre)
+            elif genre != '':
+                info = Bookinfo.objects.get(title=title, author=author, cover_price=price)
+                info.genre = genre
+                info.save()
 
             info = Bookinfo.objects.get(title=title, author=author, cover_price=price)
             Book.objects.create(info=info, store=request.user.staff.store, status=0)
             messages.success(request, f'Book {title} is added successfully')
 
-        return render(request, 'pages/add_book.html', {'bookinfo': data, 'account': request.user})
+        return render(request, 'pages/add_book.html', {'bookinfo': data, 'account': request.user, 'genres': config.genres.items()})
     return redirect('home:home')
 
 

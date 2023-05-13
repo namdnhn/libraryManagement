@@ -46,19 +46,20 @@
           <div class="product-content-right">
             <div class="portfolio-info">
               {% if not editmode %}
-              <h3>Thông tin sách: {{book.title}}</h3>
+              <h3 style="font-size: 30px;">{{book.title}}</h3>
               <ul>
                 <li><strong>Nhà xuất bản</strong>: {{book.publisher}}</li>
                 <li><strong>Tác giả</strong>: {{book.author}}</li>
                 <li><strong>Số trang</strong>: {{book.pages}}</li>
                 <li><strong>Giá bìa</strong>: {{book.cover_price}} VNĐ</li>
-                {% if score_rate == 0 %}
+                <li><strong>Thể loại</strong>: {{book.genre}}</li>
+                {% if not score_rate or score_rate == 0 %}
                 <li><strong>Rating</strong>: chưa có lượt đánh giá nào</li>
                 {% else %}
                 <li><strong>Rating</strong>: {{score_rate}} / 5 (đánh giá bởi {{rate_count}} người)</li>
                 {% endif %}
 
-                {% if user.username %}
+                {% if user.username and not user.is_staff %}
                 {% if book_count > 0 %}
                 <li><strong>Tình trạng: </strong>Hiện có {{book_count}} quyển ở cơ sở {{user.user.current_store}}</li>
                 {% else %}
@@ -142,9 +143,9 @@
 
                   <li>
                     <div class="row mb-3">
-                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Rating</strong></label>
+                      <label class="col-md-6 col-lg-4 col-form-label"><strong>Thể loại</strong></label>
                       <div class="col-md-6 col-lg-8">
-                        <input name="rating" class="form-control" value="{{ book.rating }}">
+                        <input name="genre" class="form-control" value="{{ book.genre }}">
                       </div>
                     </div>
                   </li>
@@ -185,91 +186,73 @@
           </div>
         </div>
       </div>
-      {% if user.username %}
-      {% if not did_rate %}
-      <!-- Đánh giá sách -->
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <h3 style="color: #ddd;">Thêm đánh giá:</h3>
-            <form method="post" action="{% url 'user:add_rating' book.id %}">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="rating_value">Đánh giá:</label>
-                <select class="form-control" id="rating_value" name="rating_value">
-                  <option value="1">1 sao</option>
-                  <option value="2">2 sao</option>
-                  <option value="3">3 sao</option>
-                  <option value="4">4 sao</option>
-                  <option value="5">5 sao</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      {% else %}
-      <!-- Sửa đánh giá -->
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <h3 style="color: #ddd;">Thêm đánh giá:</h3>
-            <form method="post" action="{% url 'user:edit_rating' book.id %}">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="rating_value">Đánh giá:</label>
-                <select class="form-control" id="rating_value" name="rating_value">
-                  <option value="1">1 sao</option>
-                  <option value="2">2 sao</option>
-                  <option value="3">3 sao</option>
-                  <option value="4">4 sao</option>
-                  <option value="5">5 sao</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Sửa đánh giá</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      <!-- Comment add -->
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <h3 style="color: #ddd;">Add a comment:</h3>
+      {% if user.username and not user.is_staff %}
+        <!-- Đánh giá sách -->
+        <div class="container">
+          <div class="row d-flex align-items-center" style="padding: 100px 0 25px 0;">
+            <div class="col-md-4">
+              <h3 style="color: #ddd;">Thêm đánh giá</h3>
+            </div>
+            <div class="col-md-8">
+              <form method="post" action="{% url 'user:add_rating' book.id %}">
+                {% csrf_token %}
+                <div class="form-group row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-3">
+                    <select class="form-control" id="rating_value" name="rating_value">
+                      {% for r in rateOptions %}
+                        <option value={{r}} {% if curRate == r %} selected {% endif %}>{{r}} sao</option>
+                      {% endfor %}
+                      {% if curRate == 0 %}
+                        <option value="0" selected>Chưa đánh giá</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-outline-primary">Đánh giá</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
             <form method="post" action="{% url 'user:add_comment' book.id %}">
               {% csrf_token %}
-              <div class="form-group">
-                <label for="comment_text" style="color: #ddd;">Comment:</label>
-                <textarea class="form-control" id="comment_text" name="comment_text" rows="3"></textarea>
+              <div class="row align-items-center"  style="padding: 15px 0 25px 0;">
+                <div class="form-group col-md-8">
+                  <textarea class="form-control" placeholder="Hãy ghi vài dòng đánh giá của bạn về quyển sách này..." id="comment_text" name="comment_text" rows="4"></textarea>
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-outline-primary">Comment</button>
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
-      </div>
       {% endif %}
+
       <!-- Comment list -->
       <div class="container">
-        <div class="row">
+        <div class="row d-flex align-items-center">
           <div class="col-md-8">
-            <h3 style="color: #ddd;">Comments: ({{ comments_count }})</h3>
+            <h3 style="color: #ddd; padding: 15px 0;">Comments ({{ comments_count }})</h3>
             {% if comments %}
             {% for comment in comments %}
             <div class="card p-3">
-              <div class="d-flex justify-content-between align-items-center">
-
-                <div class="user d-flex flex-row align-items-center">
-
-                  <img src="" width="30" class="user-img rounded-circle mr-2">
-                  <span><small class="font-weight-bold text-primary">{{ comment.user.username }}</small>
-                    <small class="font-weight-bold">{{ comment.comment }}</small></span>
-
+              <div class="row d-flex justify-content-between">
+                <div class="col-2" style="text-align: center;">
+                  <img src="/{{comment.user.user.avatar}}" width="50" class="user-img rounded-circle mr-2" style="padding:10px 0;">
+                  <p align="center" class="font-weight-bold text-primary">{{ comment.user.username }}</p>
                 </div>
-
-
-                <small>{{ comment.created_date }}</small>
+                <div class="col-md-10 align-items-start">
+                  <div class="row justify-content-end">
+                    <div class="col-md-5">
+                      <small>{{ comment.created_date }}</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <p class="font-weight-bold">{{ comment.comment }}</p>
+                  </div>
+                </div>
               </div>
             </div>
             {% endfor %}

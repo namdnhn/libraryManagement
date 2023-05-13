@@ -36,42 +36,45 @@ Transaction
 
         <div class="section-title">
           <h2>Transaction</h2>
-          <p>Hãy kiểm tra lại thông tin đơn mượn</p>
+          <p>Hãy kiểm tra lại thông tin đơn mượn.</p>
+          <p>Vui lòng tới nhận sách trong vòng 3 ngày và trả sách trong vòng 10 ngày sau khi đã nhận được sách.</p>
         </div>
 
         {% if exist %}
         <div class="container">
-          <div class="row">
-            <div class="col-md-6 text-white">
-              <h2>Thông tin khách hàng</h2>
+          <div class="row d-flex justify-content-between">
+            <div class="col-md-5 text-white">
+              <h2 style="padding: 10px 0;">Thông tin khách hàng</h2>
               <form>
-                <div class="form-group">
+                <div class="form-group" style="padding:5px 0;">
                   <label for="name">Tên khách hàng:</label>
                   <input type="text" class="form-control" id="name" name="name"
-                    value="{{ crr1.lname|add:" "|add:crr1.fname }}" readonly>
+                    value="{{ crr1.lname|add:" "|add:crr1.fname }}" disabled>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="padding:5px 0;">
                   <label for="phone">Số điện thoại:</label>
-                  <input type="tel" class="form-control" id="phone" name="phone" value="{{crr1.phone}}" readonly>
+                  <input type="tel" class="form-control" id="phone" name="phone" value="{{crr1.phone}}" disabled>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="padding:5px 0;">
                   <label for="email">Email:</label>
-                  <input type="email" class="form-control" id="email" name="email" value="{{crr2.email}}" readonly>
+                  <input type="email" class="form-control" id="email" name="email" value="{{crr2.email}}" disabled>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="padding:5px 0;">
                   <label for="store">Cơ sở:</label>
                   <input type="store" class="form-control" id="store" name="store" value="{{user.user.current_store}}"
-                    readonly>
+                    disabled>
                 </div>
               </form>
               <form method="POST" action="{% url 'cart:transaction_create' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Lưu đơn mượn</button>
+                <div class="form-group" style="padding:10px 0;">
+                  <button type="submit" class="btn btn-primary">Lưu đơn mượn</button>
+                </div>
               </form>
             </div>
             <div class="col-md-6 text-white">
-              <h2>Danh sách sách mượn</h2>
-              <table class="table text-white">
+              <h2 style="padding:10px 0;">Danh sách sách mượn</h2>
+              <table class="table text-white" style="padding:5px 0;">
                 <thead>
                   <tr>
                     <th scope="col">STT</th>

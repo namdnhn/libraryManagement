@@ -7,13 +7,14 @@ from django.contrib.auth import get_user_model
 
 Account = get_user_model()
 
+
 # Create your views here.
 def bookpage(request, id):
     book = Bookinfo.objects.get(id=id)
     score_rate = 0
     comments = Comment.objects.filter(book=book)
     rates = Rate.objects.filter(book=book)
-    did_rate = Rate.objects.filter(book=book, user=request.user).exists()
+
     if Rate.objects.filter(book=book).exists():
         sum = 0
         for rate in rates:
@@ -26,27 +27,32 @@ def bookpage(request, id):
         if not request.user.user.expired_date or request.user.user.expired_date < datetime.now().date():
             expiredAccount = True
         book_count = Book.objects.filter(info=book, store=request.user.user.current_store, status=0).count()
-        return render(request, 'bookshowing.html', {'book': book, 
+        curRate = 0
+        if Rate.objects.filter(book=book, user=request.user).exists():
+            curRate = Rate.objects.get(book=book, user=request.user).score
+        return render(request, 'bookshowing.html', {'book': book,
                                                     'book_count': book_count,
-                                                    'expiredAccount': expiredAccount, 
+                                                    'expiredAccount': expiredAccount,
                                                     'comments': comments,
                                                     'comments_count': comments.count(),
-                                                    'score_rate': round(score_rate, 1), 
+                                                    'score_rate': round(score_rate, 1),
                                                     'rate_count': rates.count(),
-                                                    'did_rate': did_rate})
+                                                    'curRate': curRate,
+                                                    'rateOptions': [1, 2, 3, 4, 5]})
     else:
-        return render(request, 'bookshowing.html', {'book': book, 
+        return render(request, 'bookshowing.html', {'book': book,
                                                     'comments': comments,
                                                     'comments_count': comments.count(),
-                                                    'score_rate': round(score_rate, 1), 
-                                                    'rate_count': rates.count(),
-                                                    'did_rate': did_rate})
+                                                    'score_rate': round(score_rate, 1),
+                                                    'rate_count': rates.count()})
 
 
 def book_list(request):
     books = Bookinfo.objects.all()
     if request.user.is_authenticated:
-        if request.user.user.current_store:
+        if request.user.is_staff:
+            return render(request, 'booklist.html', {'books': [(book, True) for book in books]})
+        elif request.user.user.current_store:
             store = request.user.user.current_store
             book_and_avai = []
             for book in books:
@@ -61,7 +67,8 @@ def book_list(request):
         for book in books:
             book_and_avai.append((book, True))
         return render(request, 'booklist.html', {'books': book_and_avai})
-    
+
+
 def is_available_in_store(book, store):
     return Book.objects.filter(info=book, store=store, status=0)
 
@@ -77,6 +84,7 @@ def search(request):
         'q': q,
         'book_count': book_count
     })
+
 
 def view_book_by_genre(request, genre):
     books = Bookinfo.objects.order_by('-title').filter(Q(genre__icontains=genre))

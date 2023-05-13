@@ -75,8 +75,26 @@
             <a class="nav-link active" aria-current="page" href="{% url 'home:home' %}">Trang chủ</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'book:book_list' %}">List sách</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{% url 'book:book_list' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              List sách
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Chính trị' %}">Chính trị</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Pháp luật' %}">Pháp luật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Khoa học công nghệ' %}">Khoa học công nghệ</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Kinh tế' %}">Kinh tế</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn học nghệ thuật' %}">Văn học nghệ thuật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn hoá xã hội' %}">Văn hoá xã hội</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Lịch sử' %}">Lịch sử</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Giáo trình' %}">Giáo trình</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Truyện, tiểu thuyết' %}">Truyện, tiểu thuyết</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm lý' %}">Tâm lý</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm linh, tôn giáo' %}">Tâm linh, tôn giáo</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Thiếu nhi' %}">Thiếu nhi</a></li>
+            </ul>
           </li>
 
           {% if account.username %}
@@ -90,8 +108,6 @@
                 <a href="{% url 'home:user_profile' %}"> <!--data-gallery="Portfolio" class="portfolio-lightbox preview-link"--> Thông tin cá
                   nhân</a>
               </li>
-              <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">Giỏ sách</a></li>
-               <!--<li><a class="dropdown-item" href="borrowed">Sách đã mượn</a></li> -->
               <li>
                 <hr class="dropdown-divider">
               </li>
