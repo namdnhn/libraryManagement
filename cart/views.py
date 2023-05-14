@@ -34,7 +34,10 @@ def cart_add(request, id):
             is_active=True
         )
         new_book.save()
-    return redirect('cart:cart_detail')
+        return redirect('cart:cart_detail')
+    else:
+        messages.info(request, "Bạn đã có quyển sách này trong giỏ hàng.")
+        return redirect('book:detailed_book', id)
 
 
 @login_required(login_url="/login")
