@@ -29,9 +29,11 @@ def add_rating(request, book_id):
                 rating = Rate.objects.get(book=book, user=user)
                 rating.score = rating_value
                 rating.save()
+                messages.success(request, 'Thay đổi đánh giá sách thành công.')
             else:
                 rating = Rate.objects.create(book=book, user=user, score=rating_value)
                 rating.save()
+                messages.success(request, 'Đánh giá sách thành công.')
         else:
             messages.error(request, 'Đánh giá không hợp lệ.')
 

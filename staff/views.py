@@ -5,7 +5,7 @@ import config
 from book.models import Bookinfo, Book
 from cart.models import Transaction, TransactionItem
 from store.models import Store
-from user.models import User
+from user.models import User, Comment, Rate
 from datetime import datetime
 
 
@@ -69,6 +69,12 @@ def booksListView(request):
 def editBookProfile(request, id):
     if request.user.is_active and request.user.is_staff:
         book = Bookinfo.objects.get(id=id)
+        score_rate = 0
+        comments = Comment.objects.filter(book=book)
+        rates = Rate.objects.filter(book=book)
+        if Rate.objects.filter(book=book).exists():
+            score_rate = sum([rate.score for rate in rates]) / rates.count()
+
         editmode = False
         if request.method == 'POST':
             if 'edit' in request.POST:
@@ -87,7 +93,11 @@ def editBookProfile(request, id):
                     book.book_image = request.FILES['image']
                 book.save()
 
-        return render(request, 'bookshowing.html', {'book': book, 'account': request.user, 'editmode': editmode, 'genres': config.genres.items()})
+        return render(request, 'bookshowing.html', {'book': book, 'account': request.user, 'editmode': editmode, 'genres': config.genres.items(),
+                                                    'comments': comments,
+                                                    'comments_count': comments.count(),
+                                                    'score_rate': round(score_rate, 1),
+                                                    'rate_count': rates.count()})
 
     return redirect('home:home')
 
