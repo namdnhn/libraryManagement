@@ -86,7 +86,6 @@ def editBookProfile(request, id):
                 book.author = request.POST.get('author')
                 book.pages = request.POST.get('pages')
                 book.cover_price = request.POST.get('cover_price')
-                book.rating = request.POST.get('rating')
                 book.description = request.POST.get('description')
                 if request.FILES:
                     print(request.FILES)
