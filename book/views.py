@@ -72,12 +72,14 @@ def is_available_in_store(book, store):
 
 def search(request):
     q = request.GET.get('q')
-    books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q))
+    books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q) | Q(author__icontains=q) | Q(genre__icontains=q))
     book_count = books.count()
-    store = request.user.user.current_store if not request.user.is_staff else request.user.staff.store
+    store = None
+    if request.user.is_authenticated:
+        store = request.user.user.current_store if not request.user.is_staff else request.user.staff.store
     book_and_avai = []
     for book in books:
-        is_available = is_available_in_store(book, store)
+        is_available = is_available_in_store(book, store) if store else True
         book_and_avai.append((book, is_available))
     return render(request, 'booksearch.html', {'books': book_and_avai, 'q': q, 'book_count': book_count})
 
