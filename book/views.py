@@ -16,10 +16,7 @@ def bookpage(request, id):
     rates = Rate.objects.filter(book=book)
 
     if Rate.objects.filter(book=book).exists():
-        sum = 0
-        for rate in rates:
-            sum += rate.score
-        score_rate = float(sum) / rates.count()
+        score_rate = sum([rate.score for rate in rates]) / rates.count()
         book.rating = score_rate
         book.save()
     if request.user.is_authenticated:
@@ -74,23 +71,27 @@ def is_available_in_store(book, store):
 
 
 def search(request):
-    if 'q' in request.GET:
-        q = request.GET.get('q')
-        print(q)
-        books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q))
-        book_count = books.count()
-    return render(request, 'booksearch.html', {
-        'books': books,
-        'q': q,
-        'book_count': book_count
-    })
+    q = request.GET.get('q')
+    books = Bookinfo.objects.order_by('-title').filter(Q(title__icontains=q) | Q(description__icontains=q))
+    book_count = books.count()
+    store = request.user.user.current_store if not request.user.is_staff else request.user.staff.store
+    book_and_avai = []
+    for book in books:
+        is_available = is_available_in_store(book, store)
+        book_and_avai.append((book, is_available))
+    return render(request, 'booksearch.html', {'books': book_and_avai, 'q': q, 'book_count': book_count})
 
 
 def view_book_by_genre(request, genre):
     books = Bookinfo.objects.order_by('-title').filter(Q(genre__icontains=genre))
     book_count = books.count()
+    store = request.user.user.current_store if not request.user.is_staff else request.user.staff.store
+    book_and_avai = []
+    for book in books:
+        is_available = is_available_in_store(book, store)
+        book_and_avai.append((book, is_available))
     return render(request, 'booksearchbygenre.html', {
-        'books': books,
+        'books': book_and_avai,
         'genre': genre,
         'book_count': book_count
     })

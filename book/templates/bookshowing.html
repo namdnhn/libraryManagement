@@ -72,14 +72,12 @@
                 <input type="hidden" name="book_id" value="{{book.id}}" />
                 <input type="hidden" name="quantity" value="1" />
 
-                {% if not account.is_staff %}
-                {% if book_count > 0 %}
+                {% if not account.is_staff and book_count > 0 %}
                 <a href="{% url 'cart:cart_add' book.id %}">
                   <button class="btn btn-outline-success" type="button">
                     Thêm vào giỏ hàng
                   </button>
                 </a>
-                {% endif %}
                 {% endif %}
               </form>
               <br>
@@ -186,6 +184,7 @@
           </div>
         </div>
       </div>
+
       {% if user.username and not user.is_staff %}
         <!-- Đánh giá sách -->
         <div class="container">
@@ -197,7 +196,9 @@
               <form method="post" action="{% url 'user:add_rating' book.id %}">
                 {% csrf_token %}
                 <div class="form-group row">
-                  <div class="col-md-3"></div>
+                  <div class="col-md-3 d-flex align-items-center">
+                    <p style="color: #ddd;">Bạn đã đánh giá sách</p>
+                  </div>
                   <div class="col-md-3">
                     <select class="form-control" id="rating_value" name="rating_value">
                       {% for r in rateOptions %}
@@ -217,7 +218,7 @@
 
             <form method="post" action="{% url 'user:add_comment' book.id %}">
               {% csrf_token %}
-              <div class="row align-items-center"  style="padding: 15px 0 25px 0;">
+              <div class="row align-items-center"  style="padding: 15px 0 0 0;">
                 <div class="form-group col-md-8">
                   <textarea class="form-control" placeholder="Hãy ghi vài dòng đánh giá của bạn về quyển sách này..." id="comment_text" name="comment_text" rows="4"></textarea>
                 </div>
@@ -234,7 +235,7 @@
       <div class="container">
         <div class="row d-flex align-items-center">
           <div class="col-md-8">
-            <h3 style="color: #ddd; padding: 15px 0;">Comments ({{ comments_count }})</h3>
+            <h3 style="color: #ddd; padding: 50px 0 15px 0;">Comments ({{ comments_count }})</h3>
             {% if comments %}
             {% for comment in comments %}
             <div class="card p-3">
@@ -245,7 +246,7 @@
                 </div>
                 <div class="col-md-10 align-items-start">
                   <div class="row justify-content-end">
-                    <div class="col-md-5">
+                    <div class="col-md-5" style="text-align: right;">
                       <small>{{ comment.created_date }}</small>
                     </div>
                   </div>

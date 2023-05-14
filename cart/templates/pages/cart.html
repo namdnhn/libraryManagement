@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{% block title %}Giỏ hàng{% endblock %}</title>
+  <title>Giỏ hàng</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -31,15 +31,15 @@
       background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgb(166, 76, 85, 1))
     }
 
+    #header {
+      padding: 10px 0;
+    }
 
-    /* .header {
-      background-color: #327a81;
-      color: white;
-      font-size: 1.5em;
-      padding: 1rem;
-      text-align: center;
-      text-transform: uppercase;
-    } */
+    @media (max-width: 990px) {
+      #header {
+        padding: 15px 0;
+      }
+    }
 
     img {
       border-radius: 15%;
@@ -48,7 +48,6 @@
     }
 
     .table-users {
-      
       border-radius: 10px;
       box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
       max-width: calc(100% - 2em);
@@ -205,7 +204,7 @@
   <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center justify-content-between">
 
-      <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
+      <a href="/" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
           alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
@@ -220,21 +219,21 @@
               List sách
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "thiếu nhi" %}"> Truyện thiếu nhi</a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "tiểu thuyết nước ngoài" %}"> Tiểu thuyết nước ngoài</a>
-              </li>
-              <li>
-                <a href="{% url 'book:view_book_by_genre' "self-help" %}"> Self-help</a>
-              </li>
+              <li><a href="{% url 'book:book_list' %}"> <b> Tất cả </b></a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Chính trị' %}">Chính trị</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Pháp luật' %}">Pháp luật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Khoa học công nghệ' %}">Khoa học công nghệ</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Kinh tế' %}">Kinh tế</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn học nghệ thuật' %}">Văn học nghệ thuật</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Văn hoá xã hội' %}">Văn hoá xã hội</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Lịch sử' %}">Lịch sử</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Giáo trình' %}">Giáo trình</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Truyện, tiểu thuyết' %}">Truyện, tiểu thuyết</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm lý' %}">Tâm lý</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Tâm linh, tôn giáo' %}">Tâm linh, tôn giáo</a></li>
+              <li><a href="{% url 'book:view_book_by_genre' 'Thiếu nhi' %}">Thiếu nhi</a></li>
             </ul>
           </li>
-
 
           <a>
             <form action="{% url 'book:search' %}" class="search" method="GET">
@@ -244,7 +243,7 @@
 
           {% if user.username %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' %}">Store: {{user.user.current_store}}</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' user.user.current_store.id %}">Store: {{user.user.current_store}}</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"

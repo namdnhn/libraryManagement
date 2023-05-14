@@ -54,7 +54,7 @@
   {% endblock %}
     <div class="container d-flex align-items-center justify-content-between" id="header-container">
 
-      <a href="" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
+      <a href="/" class="logo me-auto"><img src="{% static 'des/logo.png' %}" width="200" height="60"
           alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
@@ -95,7 +95,7 @@
           {% if user.username %}
           {% if not user.is_staff %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' %}">Store: {{user.user.current_store}}</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'store:change_store' user.user.current_store.id %}">Store: {{user.user.current_store}}</a>
           </li>
           {% endif %}
           <li class="nav-item dropdown">

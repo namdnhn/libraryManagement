@@ -40,15 +40,24 @@ Book information
           <div class="row">
             {% for book in books %}
             <div class="col-lg-4">
-              <a href="{% url 'book:detailed_book' book.id %}">
+              <a href={% if not user.is_staff %} "{% url 'book:detailed_book' book.0.id %}"
+              {% else %} "{% url 'staff:book_profile' book.0.id %} {% endif %}">
                 <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
-                  <div class="pic"><img src="{{book.book_image.url}}" class="img-fluid" alt=""></div>
+                  <div class="pic"><img src="{{book.0.book_image.url}}" class="img-fluid" alt=""></div>
                   <div class="member-info">
-                    <h4>{{book.title}}</h4>
+                    <h4>{{book.0.title}}</h4>
+                    <span></span>
                     <div class="portfolio-info">
                       <ul>
-                        <li><strong>Tác giả</strong>: {{book.author}}</li>
-                        <li><strong>Giá thuê/ngày</strong>: {{book.cover_price}} VNĐ</li>
+                        <li><strong>Tác giả</strong>: {{book.0.author}}</li>
+                        <li><strong>Giá bìa</strong>: {{book.0.cover_price}} VNĐ</li>
+                        {% if user.username %}
+                          {% if book.1 %}
+                              <li><strong>Tình trạng: Có sẵn tại cửa hàng</strong></li>
+                          {% else %}
+                              <li><strong>Tình trạng: Không có sẵn tại cửa hàng</strong></li>
+                          {% endif %}
+                        {% endif %}
                       </ul>
                     </div>
                   </div>
