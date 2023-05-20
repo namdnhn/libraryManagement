@@ -96,9 +96,67 @@ Nhân viên tiện lợi trong việc quản lý thông tin thư viện (các đ
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+<p>Dưới đây miêu tả 1 tiến trình đầy đủ (từ khi khách hàng mới đăng kí tài khoản, cho đến khi khách hàng mượn và trả sách thành công) cùng các chức năng khác, với sự tham gia của 3 loại tài khoản: khách hàng, nhân viên và quản lý chi nhánh.
 <details>
-  <summary>Nabc.</summary>
-  <img src="" width="800">
+  <summary>Khách hàng đăng kí tài khoản và cập nhật thông tin cá nhân</summary>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/6c110743-226b-42fd-9e4a-bb0bde3cb0e2" width="800">
+  <p>Website tự động chuyển đến giao diện Profile, khách hàng phải cập nhật đủ những thông tin cần thiết trước khi tiếp tục.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/e9aa6140-94d6-46ff-9625-0888b9068c11" width="800">
+  <p>Sau đó, khách hàng cần phải liên hệ với nhân viên thư viện để xác minh thông tin và được gia hạn thẻ để có thể mượn sách.</p>
+</details>
+  
+<details>
+  <summary>Nhân viên gia hạn thẻ cho người dùng</summary>
+  <p>Nhân viên đăng nhập vào website bằng tài khoản được tạo sẵn của mình.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/28831558-3548-4837-99ab-7ae1dc29f198" width="800">
+  <p>Click vào biểu tượng con mắt để xem và chỉnh sửa thông tin cho khách hàng.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/0bf13b71-23d7-44b6-b126-965eb80740d8" width="800">
+</details>
+  
+<details>
+  <summary>Khách hàng chọn cơ sở thuận tiện nhất và tìm kiếm sách muốn mượn</summary>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/86eee65a-5618-4f32-9299-be49ee99dc94" width="800">
+  <p>Tìm kiếm sách bằng cách gõ tên sách, tên tác giả, thể loại hoặc từ khoá liên quan vào ô Search trên cùng.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/4f059fcc-006b-4f23-a641-591d7a73a2bb" width="800">
+  <p>Ấn vào quyển sách muốn xem để xem thông tin chi tiết.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/d7be2bc3-8a3f-4094-b099-4371bc9b80bb" width="800">
+</details>
+  
+<details>
+  <summary>Khách hàng thêm vào giỏ hàng những sách muốn mượn và tạo đơn mượn</summary>
+   <p>Sau khi ấn nút thêm giỏ hàng ở trên, giao diện giỏ hàng hiện tại sẽ xuất hiện. </p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/4ce2b71e-8103-4320-b9f7-6c0e621b50a7" width="800">
+  <p>Ấn nút tạo đơn mượn, xác nhận thông tin của mình và tới thư viện để nhận sách trong vòng 3 ngày.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/f584b85a-5003-47ec-8cbe-af516c3db856" width="800">
+  <p>Nếu có thay đổi ý định, muốn huỷ đơn, khách hàng có thể trực tiếp huỷ đơn trên website mà không cần liên lạc với nhân viên.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/025f3043-434e-43ee-aa31-162afb24b1f7" width="800">
+</details>
+  
+ <details>
+  <summary>Nhân viên thao tác với đơn mượn của khách hàng</summary>
+   <p>Đơn mượn của khách hàng sẽ được tự động chuyển tới trang của nhân viên trong chi nhánh được mượn, và ở trạng thái Waiting. </p>
+   <p>Sau khi khách hàng tới nhận sách, nhân viên cần xác nhận trên hệ thống bằng việc ấn nút trong cột Borrowed. Đơn hàng sẽ chuyển sang trạng thái Borrowing. </p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/d6853ce7-c091-4c77-87c9-57d29e2b35cc" width="800">
+  <p>Nếu quá hạn 3 ngày khách hàng chưa tới nhận sách mà không có liên lạc gì, nhân viên có thể vào xem chi tiết đơn hàng và huỷ đơn. (Button chỉ có thể ấn khi countdown < 0 để hạn chế sai sót huỷ nhầm đơn)</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/002d344a-7783-402b-b763-eea2fb1e9d7b" width="800">
+  <p>Khi khách hàng trả sách quyển nào, nhân viên cần xác nhận tương ứng vào nút trong cột Returned. Quyển sách sẽ chuyển từ trạng thái Borrowing sang Available.</p>
+   <p>Sau khi mọi quyển trong đơn hàng đều được trả về thư viện, trạng thái đơn hàng sẽ tự động chuyển sang Done ở danh sách Transactions. </p>
+   <p>Nếu có quyển sách trong đơn quá hạn trả, đơn hàng sẽ chuyển sang trạng thái Overdue ở danh sách Transactions để nhân viên có thể biết và liên lạc với khách hàng. </p>
+   <p>Mọi thông tin và lịch sử đơn hàng của mình, khách hàng đều có thể xem từ tài khoản của bản thân. </p>
+</details>
+  
+ <details>
+  <summary>Nhân viên quản lý kho sách và chỉnh sửa thông tin sách</summary>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/b11064c0-7f94-4144-9299-da3880a8d7a2" width="800">
+  <p>Ấn vào con mắt ở quyển sách tương ứng để xem và chỉnh sửa thông tin.</p>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/b72af502-cfa4-44b0-88bc-e35fe0675bd8" width="800">
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/59af3d6c-ca4f-42b2-9b4d-738e2814143b" width="800">
+</details>
+  
+ <details>
+  <summary>Quản lý chi nhánh quản lý thông tin nhân viên thuộc chi nhánh mình và tạo tài khoản cho nhân viên</summary>
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/756c38f0-a69e-4411-87a0-493a1c1e410d" width="800">
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/7ffcf820-702e-48ff-8a2b-116fc7b5b1d8" width="800">
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -108,7 +166,8 @@ Nhân viên tiện lợi trong việc quản lý thông tin thư viện (các đ
   
 <details>
   <summary>Cấu trúc cơ sở dữ liệu:</summary>
-  <img src="" width="800">
+  <img src="https://github.com/namdnhn/libraryManagement/assets/74077349/dc4d92ca-90e9-4541-8b2e-ad8d0dbead26" width="800">
+
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
